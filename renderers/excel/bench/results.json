@@ -1,0 +1,3061 @@
+{
+ "generatedAt": "2026-11-26T19:29:12+1100",
+ "tool": "scripts/excel/bench_sinks.py",
+ "method": "Node client (real FramePipeline fixed64 + ExcelBridgeBackend) -> WebSocket -> python -m sgs_bridge -> sink; one frame in flight; next frame sent on ack. applyMs = bridge-side decode+plan+sink write; ack latency = client round trip.",
+ "scenes": {
+  "pan": "camera pans 1.5 cells/frame over skyline + road + 6 moving cars (changes spread over the frame)",
+  "drive": "static camera, scrolling lane dashes + 6 moving cars (localised changes)"
+ },
+ "environment": {
+  "os": "Linux-6.18.44-fc-v880-x86_64-with-glibc2.39",
+  "python": "3.13.18",
+  "machine": "x86_64",
+  "cpus": 2,
+  "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+  "memGB": 7.8,
+  "node": "v22.23.5",
+  "libreoffice": "LibreOffice 24.2.7.2 420(Build:2)",
+  "libreofficeMode": "headless (no window, no repaint cost)",
+  "excel": "not available in this environment - native Excel numbers UNVERIFIED"
+ },
+ "nativeExcel": "UNVERIFIED - no Excel in this environment; run renderers/excel/native_test.py on Windows",
+ "totalSeconds": 209.9,
+ "results": [
+  {
+   "label": "mock/values-cf/80x45/full/pan",
+   "sink": "mock",
+   "strategy": "values-cf",
+   "appVersion": "mock",
+   "resolution": "80x45",
+   "width": 80,
+   "height": 45,
+   "totalCells": 3600,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 38,
+   "warmupFrames": 2,
+   "wallSeconds": 0.043,
+   "fps": 891.009,
+   "applyMs": {
+    "median": 0.362,
+    "p95": 0.649,
+    "mean": 0.407
+   },
+   "ackLatencyMs": {
+    "median": 0.675,
+    "p95": 1.613,
+    "mean": 0.858
+   },
+   "cellsWritten": {
+    "median": 3600,
+    "mean": 3600
+   },
+   "calls": {
+    "median": 1,
+    "mean": 1
+   },
+   "bytesPerFrame": {
+    "median": 4086,
+    "mean": 4086
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "mock/values-cf/80x45/diff/pan",
+   "sink": "mock",
+   "strategy": "values-cf",
+   "appVersion": "mock",
+   "resolution": "80x45",
+   "width": 80,
+   "height": 45,
+   "totalCells": 3600,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.1,
+   "fps": 876.145,
+   "applyMs": {
+    "median": 0.399,
+    "p95": 0.51,
+    "mean": 0.441
+   },
+   "ackLatencyMs": {
+    "median": 0.848,
+    "p95": 1.084,
+    "mean": 0.955
+   },
+   "cellsWritten": {
+    "median": 3081,
+    "mean": 2994.659
+   },
+   "calls": {
+    "median": 1,
+    "mean": 1.023
+   },
+   "bytesPerFrame": {
+    "median": 745,
+    "mean": 742.989
+   },
+   "changedCellsPct": 6.094,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "mock/values-cf/80x45/diff/drive",
+   "sink": "mock",
+   "strategy": "values-cf",
+   "appVersion": "mock",
+   "resolution": "80x45",
+   "width": 80,
+   "height": 45,
+   "totalCells": 3600,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.088,
+   "fps": 996.701,
+   "applyMs": {
+    "median": 0.414,
+    "p95": 0.591,
+    "mean": 0.432
+   },
+   "ackLatencyMs": {
+    "median": 0.744,
+    "p95": 0.947,
+    "mean": 0.776
+   },
+   "cellsWritten": {
+    "median": 1197,
+    "mean": 1211.216
+   },
+   "calls": {
+    "median": 1,
+    "mean": 1.034
+   },
+   "bytesPerFrame": {
+    "median": 200,
+    "mean": 203.25
+   },
+   "changedCellsPct": 0.86,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "mock/values-cf/160x90/full/pan",
+   "sink": "mock",
+   "strategy": "values-cf",
+   "appVersion": "mock",
+   "resolution": "160x90",
+   "width": 160,
+   "height": 90,
+   "totalCells": 14400,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 38,
+   "warmupFrames": 2,
+   "wallSeconds": 0.06,
+   "fps": 629.496,
+   "applyMs": {
+    "median": 0.624,
+    "p95": 0.935,
+    "mean": 0.685
+   },
+   "ackLatencyMs": {
+    "median": 1.128,
+    "p95": 2.928,
+    "mean": 1.21
+   },
+   "cellsWritten": {
+    "median": 14400,
+    "mean": 14400
+   },
+   "calls": {
+    "median": 1,
+    "mean": 1
+   },
+   "bytesPerFrame": {
+    "median": 15156,
+    "mean": 15156
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "mock/values-cf/160x90/diff/pan",
+   "sink": "mock",
+   "strategy": "values-cf",
+   "appVersion": "mock",
+   "resolution": "160x90",
+   "width": 160,
+   "height": 90,
+   "totalCells": 14400,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.154,
+   "fps": 571.045,
+   "applyMs": {
+    "median": 0.813,
+    "p95": 1.189,
+    "mean": 0.838
+   },
+   "ackLatencyMs": {
+    "median": 1.245,
+    "p95": 1.854,
+    "mean": 1.287
+   },
+   "cellsWritten": {
+    "median": 11718,
+    "mean": 11295.068
+   },
+   "calls": {
+    "median": 2,
+    "mean": 2.159
+   },
+   "bytesPerFrame": {
+    "median": 2479,
+    "mean": 2454.091
+   },
+   "changedCellsPct": 6.092,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "mock/values-cf/160x90/diff/drive",
+   "sink": "mock",
+   "strategy": "values-cf",
+   "appVersion": "mock",
+   "resolution": "160x90",
+   "width": 160,
+   "height": 90,
+   "totalCells": 14400,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.138,
+   "fps": 638.586,
+   "applyMs": {
+    "median": 0.625,
+    "p95": 0.767,
+    "mean": 0.586
+   },
+   "ackLatencyMs": {
+    "median": 1.092,
+    "p95": 1.392,
+    "mean": 1.129
+   },
+   "cellsWritten": {
+    "median": 2474,
+    "mean": 2487.534
+   },
+   "calls": {
+    "median": 3,
+    "mean": 3.023
+   },
+   "bytesPerFrame": {
+    "median": 574,
+    "mean": 577.557
+   },
+   "changedCellsPct": 0.877,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "mock/values-cf/240x135/full/pan",
+   "sink": "mock",
+   "strategy": "values-cf",
+   "appVersion": "mock",
+   "resolution": "240x135",
+   "width": 240,
+   "height": 135,
+   "totalCells": 32400,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 38,
+   "warmupFrames": 2,
+   "wallSeconds": 0.125,
+   "fps": 305.074,
+   "applyMs": {
+    "median": 1.14,
+    "p95": 1.427,
+    "mean": 1.156
+   },
+   "ackLatencyMs": {
+    "median": 1.951,
+    "p95": 2.374,
+    "mean": 1.902
+   },
+   "cellsWritten": {
+    "median": 32400,
+    "mean": 32400
+   },
+   "calls": {
+    "median": 1,
+    "mean": 1
+   },
+   "bytesPerFrame": {
+    "median": 33426,
+    "mean": 33426
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "mock/values-cf/240x135/diff/pan",
+   "sink": "mock",
+   "strategy": "values-cf",
+   "appVersion": "mock",
+   "resolution": "240x135",
+   "width": 240,
+   "height": 135,
+   "totalCells": 32400,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.234,
+   "fps": 375.966,
+   "applyMs": {
+    "median": 1.137,
+    "p95": 1.84,
+    "mean": 1.233
+   },
+   "ackLatencyMs": {
+    "median": 1.695,
+    "p95": 2.721,
+    "mean": 1.81
+   },
+   "cellsWritten": {
+    "median": 23153,
+    "mean": 23423.205
+   },
+   "calls": {
+    "median": 4,
+    "mean": 3.977
+   },
+   "bytesPerFrame": {
+    "median": 4876,
+    "mean": 4753.102
+   },
+   "changedCellsPct": 5.838,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "mock/values-cf/240x135/diff/drive",
+   "sink": "mock",
+   "strategy": "values-cf",
+   "appVersion": "mock",
+   "resolution": "240x135",
+   "width": 240,
+   "height": 135,
+   "totalCells": 32400,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.192,
+   "fps": 458.506,
+   "applyMs": {
+    "median": 0.772,
+    "p95": 0.979,
+    "mean": 0.788
+   },
+   "ackLatencyMs": {
+    "median": 1.232,
+    "p95": 1.749,
+    "mean": 1.302
+   },
+   "cellsWritten": {
+    "median": 6520,
+    "mean": 6408.523
+   },
+   "calls": {
+    "median": 4,
+    "mean": 3.977
+   },
+   "bytesPerFrame": {
+    "median": 1003,
+    "mean": 1002.75
+   },
+   "changedCellsPct": 0.785,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "mock/values-cf/320x180/full/pan",
+   "sink": "mock",
+   "strategy": "values-cf",
+   "appVersion": "mock",
+   "resolution": "320x180",
+   "width": 320,
+   "height": 180,
+   "totalCells": 57600,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 38,
+   "warmupFrames": 2,
+   "wallSeconds": 0.122,
+   "fps": 310.32,
+   "applyMs": {
+    "median": 1.028,
+    "p95": 1.316,
+    "mean": 1.062
+   },
+   "ackLatencyMs": {
+    "median": 1.669,
+    "p95": 3.244,
+    "mean": 1.932
+   },
+   "cellsWritten": {
+    "median": 57600,
+    "mean": 57600
+   },
+   "calls": {
+    "median": 1,
+    "mean": 1
+   },
+   "bytesPerFrame": {
+    "median": 58896,
+    "mean": 58896
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "mock/values-cf/320x180/diff/pan",
+   "sink": "mock",
+   "strategy": "values-cf",
+   "appVersion": "mock",
+   "resolution": "320x180",
+   "width": 320,
+   "height": 180,
+   "totalCells": 57600,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.301,
+   "fps": 292.34,
+   "applyMs": {
+    "median": 1.446,
+    "p95": 2.158,
+    "mean": 1.519
+   },
+   "ackLatencyMs": {
+    "median": 1.946,
+    "p95": 2.884,
+    "mean": 2.144
+   },
+   "cellsWritten": {
+    "median": 40510,
+    "mean": 39687.034
+   },
+   "calls": {
+    "median": 7,
+    "mean": 7.511
+   },
+   "bytesPerFrame": {
+    "median": 7528,
+    "mean": 7384.318
+   },
+   "changedCellsPct": 5.476,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "mock/values-cf/320x180/diff/drive",
+   "sink": "mock",
+   "strategy": "values-cf",
+   "appVersion": "mock",
+   "resolution": "320x180",
+   "width": 320,
+   "height": 180,
+   "totalCells": 57600,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.304,
+   "fps": 289.474,
+   "applyMs": {
+    "median": 1.063,
+    "p95": 1.853,
+    "mean": 1.175
+   },
+   "ackLatencyMs": {
+    "median": 1.621,
+    "p95": 2.757,
+    "mean": 1.811
+   },
+   "cellsWritten": {
+    "median": 6565,
+    "mean": 6706.011
+   },
+   "calls": {
+    "median": 6,
+    "mean": 5.591
+   },
+   "bytesPerFrame": {
+    "median": 1509,
+    "mean": 1504.25
+   },
+   "changedCellsPct": 0.859,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "mock/values-cf/480x270/full/pan",
+   "sink": "mock",
+   "strategy": "values-cf",
+   "appVersion": "mock",
+   "resolution": "480x270",
+   "width": 480,
+   "height": 270,
+   "totalCells": 129600,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 38,
+   "warmupFrames": 2,
+   "wallSeconds": 0.22,
+   "fps": 173.07,
+   "applyMs": {
+    "median": 1.79,
+    "p95": 2.744,
+    "mean": 1.95
+   },
+   "ackLatencyMs": {
+    "median": 2.769,
+    "p95": 4.877,
+    "mean": 3.033
+   },
+   "cellsWritten": {
+    "median": 129600,
+    "mean": 129600
+   },
+   "calls": {
+    "median": 1,
+    "mean": 1
+   },
+   "bytesPerFrame": {
+    "median": 131436,
+    "mean": 131436
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "mock/values-cf/480x270/diff/pan",
+   "sink": "mock",
+   "strategy": "values-cf",
+   "appVersion": "mock",
+   "resolution": "480x270",
+   "width": 480,
+   "height": 270,
+   "totalCells": 129600,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.542,
+   "fps": 162.293,
+   "applyMs": {
+    "median": 2.427,
+    "p95": 3.188,
+    "mean": 2.488
+   },
+   "ackLatencyMs": {
+    "median": 3.013,
+    "p95": 4.067,
+    "mean": 3.164
+   },
+   "cellsWritten": {
+    "median": 92022,
+    "mean": 89836.057
+   },
+   "calls": {
+    "median": 9,
+    "mean": 10.284
+   },
+   "bytesPerFrame": {
+    "median": 14926,
+    "mean": 14763.636
+   },
+   "changedCellsPct": 5.596,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "mock/values-cf/480x270/diff/drive",
+   "sink": "mock",
+   "strategy": "values-cf",
+   "appVersion": "mock",
+   "resolution": "480x270",
+   "width": 480,
+   "height": 270,
+   "totalCells": 129600,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.439,
+   "fps": 200.428,
+   "applyMs": {
+    "median": 1.46,
+    "p95": 1.744,
+    "mean": 1.488
+   },
+   "ackLatencyMs": {
+    "median": 1.971,
+    "p95": 4.079,
+    "mean": 2.12
+   },
+   "cellsWritten": {
+    "median": 13582,
+    "mean": 13906.159
+   },
+   "calls": {
+    "median": 7,
+    "mean": 6.989
+   },
+   "bytesPerFrame": {
+    "median": 2521,
+    "mean": 2527.432
+   },
+   "changedCellsPct": 0.821,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "mock/interior/80x45/full/pan",
+   "sink": "mock",
+   "strategy": "interior",
+   "appVersion": "mock",
+   "resolution": "80x45",
+   "width": 80,
+   "height": 45,
+   "totalCells": 3600,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 38,
+   "warmupFrames": 2,
+   "wallSeconds": 0.089,
+   "fps": 427.96,
+   "applyMs": {
+    "median": 1.421,
+    "p95": 1.954,
+    "mean": 1.489
+   },
+   "ackLatencyMs": {
+    "median": 1.866,
+    "p95": 4.603,
+    "mean": 2.076
+   },
+   "cellsWritten": {
+    "median": 3600,
+    "mean": 3600
+   },
+   "calls": {
+    "median": 20,
+    "mean": 19.605
+   },
+   "bytesPerFrame": {
+    "median": 4086,
+    "mean": 4086
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "mock/interior/80x45/diff/pan",
+   "sink": "mock",
+   "strategy": "interior",
+   "appVersion": "mock",
+   "resolution": "80x45",
+   "width": 80,
+   "height": 45,
+   "totalCells": 3600,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.171,
+   "fps": 515.113,
+   "applyMs": {
+    "median": 1.167,
+    "p95": 1.418,
+    "mean": 1.232
+   },
+   "ackLatencyMs": {
+    "median": 1.665,
+    "p95": 1.973,
+    "mean": 1.763
+   },
+   "cellsWritten": {
+    "median": 305,
+    "mean": 307.17
+   },
+   "calls": {
+    "median": 13,
+    "mean": 12.818
+   },
+   "bytesPerFrame": {
+    "median": 745,
+    "mean": 742.989
+   },
+   "changedCellsPct": 6.094,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "mock/interior/80x45/diff/drive",
+   "sink": "mock",
+   "strategy": "interior",
+   "appVersion": "mock",
+   "resolution": "80x45",
+   "width": 80,
+   "height": 45,
+   "totalCells": 3600,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.108,
+   "fps": 817.378,
+   "applyMs": {
+    "median": 0.419,
+    "p95": 1.834,
+    "mean": 0.631
+   },
+   "ackLatencyMs": {
+    "median": 0.736,
+    "p95": 3.094,
+    "mean": 1.059
+   },
+   "cellsWritten": {
+    "median": 60,
+    "mean": 63.477
+   },
+   "calls": {
+    "median": 6,
+    "mean": 6.432
+   },
+   "bytesPerFrame": {
+    "median": 200,
+    "mean": 203.25
+   },
+   "changedCellsPct": 0.86,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "mock/interior/160x90/full/pan",
+   "sink": "mock",
+   "strategy": "interior",
+   "appVersion": "mock",
+   "resolution": "160x90",
+   "width": 160,
+   "height": 90,
+   "totalCells": 14400,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 38,
+   "warmupFrames": 2,
+   "wallSeconds": 0.184,
+   "fps": 207.05,
+   "applyMs": {
+    "median": 3.014,
+    "p95": 7.191,
+    "mean": 3.571
+   },
+   "ackLatencyMs": {
+    "median": 3.458,
+    "p95": 7.708,
+    "mean": 4.225
+   },
+   "cellsWritten": {
+    "median": 14400,
+    "mean": 14400
+   },
+   "calls": {
+    "median": 36,
+    "mean": 36.079
+   },
+   "bytesPerFrame": {
+    "median": 15156,
+    "mean": 15156
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "mock/interior/160x90/diff/pan",
+   "sink": "mock",
+   "strategy": "interior",
+   "appVersion": "mock",
+   "resolution": "160x90",
+   "width": 160,
+   "height": 90,
+   "totalCells": 14400,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.357,
+   "fps": 246.587,
+   "applyMs": {
+    "median": 2.58,
+    "p95": 3.482,
+    "mean": 2.74
+   },
+   "ackLatencyMs": {
+    "median": 2.936,
+    "p95": 6.578,
+    "mean": 3.588
+   },
+   "cellsWritten": {
+    "median": 1162,
+    "mean": 1164.295
+   },
+   "calls": {
+    "median": 28,
+    "mean": 28.352
+   },
+   "bytesPerFrame": {
+    "median": 2479,
+    "mean": 2454.091
+   },
+   "changedCellsPct": 6.092,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "mock/interior/160x90/diff/drive",
+   "sink": "mock",
+   "strategy": "interior",
+   "appVersion": "mock",
+   "resolution": "160x90",
+   "width": 160,
+   "height": 90,
+   "totalCells": 14400,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.154,
+   "fps": 570.412,
+   "applyMs": {
+    "median": 0.674,
+    "p95": 0.916,
+    "mean": 0.729
+   },
+   "ackLatencyMs": {
+    "median": 1.075,
+    "p95": 1.556,
+    "mean": 1.198
+   },
+   "cellsWritten": {
+    "median": 124,
+    "mean": 127.489
+   },
+   "calls": {
+    "median": 9,
+    "mean": 8.489
+   },
+   "bytesPerFrame": {
+    "median": 574,
+    "mean": 577.557
+   },
+   "changedCellsPct": 0.877,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "mock/interior/240x135/full/pan",
+   "sink": "mock",
+   "strategy": "interior",
+   "appVersion": "mock",
+   "resolution": "240x135",
+   "width": 240,
+   "height": 135,
+   "totalCells": 32400,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 38,
+   "warmupFrames": 2,
+   "wallSeconds": 0.243,
+   "fps": 156.626,
+   "applyMs": {
+    "median": 5.034,
+    "p95": 5.789,
+    "mean": 5.107
+   },
+   "ackLatencyMs": {
+    "median": 5.584,
+    "p95": 6.363,
+    "mean": 5.62
+   },
+   "cellsWritten": {
+    "median": 32400,
+    "mean": 32400
+   },
+   "calls": {
+    "median": 61,
+    "mean": 61.368
+   },
+   "bytesPerFrame": {
+    "median": 33426,
+    "mean": 33426
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "mock/interior/240x135/diff/pan",
+   "sink": "mock",
+   "strategy": "interior",
+   "appVersion": "mock",
+   "resolution": "240x135",
+   "width": 240,
+   "height": 135,
+   "totalCells": 32400,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.566,
+   "fps": 155.449,
+   "applyMs": {
+    "median": 5.016,
+    "p95": 5.998,
+    "mean": 5.03
+   },
+   "ackLatencyMs": {
+    "median": 5.479,
+    "p95": 6.653,
+    "mean": 5.572
+   },
+   "cellsWritten": {
+    "median": 2581,
+    "mean": 2577.83
+   },
+   "calls": {
+    "median": 52,
+    "mean": 51.716
+   },
+   "bytesPerFrame": {
+    "median": 4876,
+    "mean": 4753.102
+   },
+   "changedCellsPct": 5.838,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "mock/interior/240x135/diff/drive",
+   "sink": "mock",
+   "strategy": "interior",
+   "appVersion": "mock",
+   "resolution": "240x135",
+   "width": 240,
+   "height": 135,
+   "totalCells": 32400,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.259,
+   "fps": 339.748,
+   "applyMs": {
+    "median": 1.104,
+    "p95": 1.42,
+    "mean": 1.125
+   },
+   "ackLatencyMs": {
+    "median": 1.649,
+    "p95": 2.267,
+    "mean": 1.673
+   },
+   "cellsWritten": {
+    "median": 253,
+    "mean": 255.75
+   },
+   "calls": {
+    "median": 9,
+    "mean": 8.92
+   },
+   "bytesPerFrame": {
+    "median": 1003,
+    "mean": 1002.75
+   },
+   "changedCellsPct": 0.785,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "mock/interior/320x180/full/pan",
+   "sink": "mock",
+   "strategy": "interior",
+   "appVersion": "mock",
+   "resolution": "320x180",
+   "width": 320,
+   "height": 180,
+   "totalCells": 57600,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 38,
+   "warmupFrames": 2,
+   "wallSeconds": 0.433,
+   "fps": 87.736,
+   "applyMs": {
+    "median": 6.756,
+    "p95": 22.328,
+    "mean": 9.153
+   },
+   "ackLatencyMs": {
+    "median": 7.402,
+    "p95": 23.857,
+    "mean": 10.097
+   },
+   "cellsWritten": {
+    "median": 57600,
+    "mean": 57600
+   },
+   "calls": {
+    "median": 93,
+    "mean": 93.632
+   },
+   "bytesPerFrame": {
+    "median": 58896,
+    "mean": 58896
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "mock/interior/320x180/diff/pan",
+   "sink": "mock",
+   "strategy": "interior",
+   "appVersion": "mock",
+   "resolution": "320x180",
+   "width": 320,
+   "height": 180,
+   "totalCells": 57600,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.797,
+   "fps": 110.451,
+   "applyMs": {
+    "median": 7.197,
+    "p95": 7.923,
+    "mean": 7.294
+   },
+   "ackLatencyMs": {
+    "median": 7.601,
+    "p95": 8.652,
+    "mean": 7.789
+   },
+   "cellsWritten": {
+    "median": 4241,
+    "mean": 4242.227
+   },
+   "calls": {
+    "median": 80,
+    "mean": 79.261
+   },
+   "bytesPerFrame": {
+    "median": 7528,
+    "mean": 7384.318
+   },
+   "changedCellsPct": 5.476,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "mock/interior/320x180/diff/drive",
+   "sink": "mock",
+   "strategy": "interior",
+   "appVersion": "mock",
+   "resolution": "320x180",
+   "width": 320,
+   "height": 180,
+   "totalCells": 57600,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.279,
+   "fps": 314.995,
+   "applyMs": {
+    "median": 1.188,
+    "p95": 1.402,
+    "mean": 1.193
+   },
+   "ackLatencyMs": {
+    "median": 1.694,
+    "p95": 2.007,
+    "mean": 1.7
+   },
+   "cellsWritten": {
+    "median": 493,
+    "mean": 496.932
+   },
+   "calls": {
+    "median": 9,
+    "mean": 9
+   },
+   "bytesPerFrame": {
+    "median": 1509,
+    "mean": 1504.25
+   },
+   "changedCellsPct": 0.859,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "mock/interior/480x270/full/pan",
+   "sink": "mock",
+   "strategy": "interior",
+   "appVersion": "mock",
+   "resolution": "480x270",
+   "width": 480,
+   "height": 270,
+   "totalCells": 129600,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 38,
+   "warmupFrames": 2,
+   "wallSeconds": 0.954,
+   "fps": 39.842,
+   "applyMs": {
+    "median": 19.726,
+    "p95": 30.971,
+    "mean": 21.159
+   },
+   "ackLatencyMs": {
+    "median": 20.964,
+    "p95": 32.777,
+    "mean": 22.449
+   },
+   "cellsWritten": {
+    "median": 129600,
+    "mean": 129600
+   },
+   "calls": {
+    "median": 204,
+    "mean": 204.605
+   },
+   "bytesPerFrame": {
+    "median": 131436,
+    "mean": 131436
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "mock/interior/480x270/diff/pan",
+   "sink": "mock",
+   "strategy": "interior",
+   "appVersion": "mock",
+   "resolution": "480x270",
+   "width": 480,
+   "height": 270,
+   "totalCells": 129600,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 2.075,
+   "fps": 42.404,
+   "applyMs": {
+    "median": 18.924,
+    "p95": 27.682,
+    "mean": 19.97
+   },
+   "ackLatencyMs": {
+    "median": 19.782,
+    "p95": 28.538,
+    "mean": 20.858
+   },
+   "cellsWritten": {
+    "median": 9859,
+    "mean": 9830.682
+   },
+   "calls": {
+    "median": 188,
+    "mean": 186.909
+   },
+   "bytesPerFrame": {
+    "median": 14926,
+    "mean": 14763.636
+   },
+   "changedCellsPct": 5.596,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "mock/interior/480x270/diff/drive",
+   "sink": "mock",
+   "strategy": "interior",
+   "appVersion": "mock",
+   "resolution": "480x270",
+   "width": 480,
+   "height": 270,
+   "totalCells": 129600,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.557,
+   "fps": 157.983,
+   "applyMs": {
+    "median": 1.943,
+    "p95": 2.583,
+    "mean": 2.035
+   },
+   "ackLatencyMs": {
+    "median": 2.534,
+    "p95": 3.639,
+    "mean": 2.68
+   },
+   "cellsWritten": {
+    "median": 1043,
+    "mean": 1066.227
+   },
+   "calls": {
+    "median": 9,
+    "mean": 9.057
+   },
+   "bytesPerFrame": {
+    "median": 2521,
+    "mean": 2527.432
+   },
+   "changedCellsPct": 0.821,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/values-cf/80x45/full/pan",
+   "sink": "calc-uno",
+   "strategy": "values-cf",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "80x45",
+   "width": 80,
+   "height": 45,
+   "totalCells": 3600,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 38,
+   "warmupFrames": 2,
+   "wallSeconds": 0.282,
+   "fps": 134.877,
+   "applyMs": {
+    "median": 6.057,
+    "p95": 9.861,
+    "mean": 6.572
+   },
+   "ackLatencyMs": {
+    "median": 6.59,
+    "p95": 11.764,
+    "mean": 7.179
+   },
+   "cellsWritten": {
+    "median": 3600,
+    "mean": 3600
+   },
+   "calls": {
+    "median": 4,
+    "mean": 4
+   },
+   "bytesPerFrame": {
+    "median": 4086,
+    "mean": 4086
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/values-cf/80x45/diff/pan",
+   "sink": "calc-uno",
+   "strategy": "values-cf",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "80x45",
+   "width": 80,
+   "height": 45,
+   "totalCells": 3600,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.496,
+   "fps": 177.33,
+   "applyMs": {
+    "median": 4.619,
+    "p95": 7.16,
+    "mean": 4.968
+   },
+   "ackLatencyMs": {
+    "median": 5.099,
+    "p95": 7.719,
+    "mean": 5.439
+   },
+   "cellsWritten": {
+    "median": 3081,
+    "mean": 3009.364
+   },
+   "calls": {
+    "median": 4,
+    "mean": 4
+   },
+   "bytesPerFrame": {
+    "median": 745,
+    "mean": 742.989
+   },
+   "changedCellsPct": 6.094,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/values-cf/80x45/diff/drive",
+   "sink": "calc-uno",
+   "strategy": "values-cf",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "80x45",
+   "width": 80,
+   "height": 45,
+   "totalCells": 3600,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.416,
+   "fps": 211.738,
+   "applyMs": {
+    "median": 3.757,
+    "p95": 6.273,
+    "mean": 4.063
+   },
+   "ackLatencyMs": {
+    "median": 4.192,
+    "p95": 7.944,
+    "mean": 4.536
+   },
+   "cellsWritten": {
+    "median": 1215,
+    "mean": 1235.068
+   },
+   "calls": {
+    "median": 4,
+    "mean": 4
+   },
+   "bytesPerFrame": {
+    "median": 200,
+    "mean": 203.25
+   },
+   "changedCellsPct": 0.86,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/values-cf/160x90/full/pan",
+   "sink": "calc-uno",
+   "strategy": "values-cf",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "160x90",
+   "width": 160,
+   "height": 90,
+   "totalCells": 14400,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 38,
+   "warmupFrames": 2,
+   "wallSeconds": 0.578,
+   "fps": 65.689,
+   "applyMs": {
+    "median": 13.239,
+    "p95": 21.068,
+    "mean": 14.032
+   },
+   "ackLatencyMs": {
+    "median": 14.192,
+    "p95": 22.013,
+    "mean": 14.773
+   },
+   "cellsWritten": {
+    "median": 14400,
+    "mean": 14400
+   },
+   "calls": {
+    "median": 4,
+    "mean": 4
+   },
+   "bytesPerFrame": {
+    "median": 15156,
+    "mean": 15156
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/values-cf/160x90/diff/pan",
+   "sink": "calc-uno",
+   "strategy": "values-cf",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "160x90",
+   "width": 160,
+   "height": 90,
+   "totalCells": 14400,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 1.022,
+   "fps": 86.097,
+   "applyMs": {
+    "median": 9.92,
+    "p95": 14.603,
+    "mean": 10.578
+   },
+   "ackLatencyMs": {
+    "median": 10.591,
+    "p95": 15.431,
+    "mean": 11.189
+   },
+   "cellsWritten": {
+    "median": 12480,
+    "mean": 12400
+   },
+   "calls": {
+    "median": 4,
+    "mean": 4
+   },
+   "bytesPerFrame": {
+    "median": 2479,
+    "mean": 2454.091
+   },
+   "changedCellsPct": 6.092,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/values-cf/160x90/diff/drive",
+   "sink": "calc-uno",
+   "strategy": "values-cf",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "160x90",
+   "width": 160,
+   "height": 90,
+   "totalCells": 14400,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.643,
+   "fps": 136.781,
+   "applyMs": {
+    "median": 5.913,
+    "p95": 11.265,
+    "mean": 6.319
+   },
+   "ackLatencyMs": {
+    "median": 6.336,
+    "p95": 11.807,
+    "mean": 6.779
+   },
+   "cellsWritten": {
+    "median": 6027,
+    "mean": 6077.432
+   },
+   "calls": {
+    "median": 4,
+    "mean": 4
+   },
+   "bytesPerFrame": {
+    "median": 574,
+    "mean": 577.557
+   },
+   "changedCellsPct": 0.877,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/values-cf/240x135/full/pan",
+   "sink": "calc-uno",
+   "strategy": "values-cf",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "240x135",
+   "width": 240,
+   "height": 135,
+   "totalCells": 32400,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 38,
+   "warmupFrames": 2,
+   "wallSeconds": 1.211,
+   "fps": 31.391,
+   "applyMs": {
+    "median": 27.445,
+    "p95": 41.33,
+    "mean": 29.579
+   },
+   "ackLatencyMs": {
+    "median": 29.249,
+    "p95": 42.467,
+    "mean": 30.756
+   },
+   "cellsWritten": {
+    "median": 32400,
+    "mean": 32400
+   },
+   "calls": {
+    "median": 4,
+    "mean": 4
+   },
+   "bytesPerFrame": {
+    "median": 33426,
+    "mean": 33426
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/values-cf/240x135/diff/pan",
+   "sink": "calc-uno",
+   "strategy": "values-cf",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "240x135",
+   "width": 240,
+   "height": 135,
+   "totalCells": 32400,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 2.337,
+   "fps": 37.662,
+   "applyMs": {
+    "median": 22.45,
+    "p95": 40.031,
+    "mean": 24.806
+   },
+   "ackLatencyMs": {
+    "median": 23.311,
+    "p95": 43.264,
+    "mean": 25.641
+   },
+   "cellsWritten": {
+    "median": 28080,
+    "mean": 27915.807
+   },
+   "calls": {
+    "median": 4,
+    "mean": 4.023
+   },
+   "bytesPerFrame": {
+    "median": 4876,
+    "mean": 4753.102
+   },
+   "changedCellsPct": 5.838,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/values-cf/240x135/diff/drive",
+   "sink": "calc-uno",
+   "strategy": "values-cf",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "240x135",
+   "width": 240,
+   "height": 135,
+   "totalCells": 32400,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 1.414,
+   "fps": 62.226,
+   "applyMs": {
+    "median": 13.321,
+    "p95": 20.751,
+    "mean": 14.448
+   },
+   "ackLatencyMs": {
+    "median": 13.967,
+    "p95": 21.297,
+    "mean": 15.107
+   },
+   "cellsWritten": {
+    "median": 10757,
+    "mean": 11107.682
+   },
+   "calls": {
+    "median": 6,
+    "mean": 5.432
+   },
+   "bytesPerFrame": {
+    "median": 1003,
+    "mean": 1002.75
+   },
+   "changedCellsPct": 0.785,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/values-cf/320x180/full/pan",
+   "sink": "calc-uno",
+   "strategy": "values-cf",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "320x180",
+   "width": 320,
+   "height": 180,
+   "totalCells": 57600,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 38,
+   "warmupFrames": 2,
+   "wallSeconds": 1.983,
+   "fps": 19.163,
+   "applyMs": {
+    "median": 45.298,
+    "p95": 74.979,
+    "mean": 49.422
+   },
+   "ackLatencyMs": {
+    "median": 46.326,
+    "p95": 76.305,
+    "mean": 50.585
+   },
+   "cellsWritten": {
+    "median": 57600,
+    "mean": 57600
+   },
+   "calls": {
+    "median": 4,
+    "mean": 4
+   },
+   "bytesPerFrame": {
+    "median": 58896,
+    "mean": 58896
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/values-cf/320x180/diff/pan",
+   "sink": "calc-uno",
+   "strategy": "values-cf",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "320x180",
+   "width": 320,
+   "height": 180,
+   "totalCells": 57600,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 3.789,
+   "fps": 23.228,
+   "applyMs": {
+    "median": 38.289,
+    "p95": 60.848,
+    "mean": 40.649
+   },
+   "ackLatencyMs": {
+    "median": 39.238,
+    "p95": 61.676,
+    "mean": 41.542
+   },
+   "cellsWritten": {
+    "median": 50083,
+    "mean": 48717.023
+   },
+   "calls": {
+    "median": 4,
+    "mean": 4.727
+   },
+   "bytesPerFrame": {
+    "median": 7528,
+    "mean": 7384.318
+   },
+   "changedCellsPct": 5.476,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/values-cf/320x180/diff/drive",
+   "sink": "calc-uno",
+   "strategy": "values-cf",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "320x180",
+   "width": 320,
+   "height": 180,
+   "totalCells": 57600,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 1.951,
+   "fps": 45.115,
+   "applyMs": {
+    "median": 19.517,
+    "p95": 23.796,
+    "mean": 19.835
+   },
+   "ackLatencyMs": {
+    "median": 20.191,
+    "p95": 26.179,
+    "mean": 20.599
+   },
+   "cellsWritten": {
+    "median": 13273,
+    "mean": 13103.284
+   },
+   "calls": {
+    "median": 8,
+    "mean": 7.955
+   },
+   "bytesPerFrame": {
+    "median": 1509,
+    "mean": 1504.25
+   },
+   "changedCellsPct": 0.859,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/values-cf/480x270/full/pan",
+   "sink": "calc-uno",
+   "strategy": "values-cf",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "480x270",
+   "width": 480,
+   "height": 270,
+   "totalCells": 129600,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 38,
+   "warmupFrames": 2,
+   "wallSeconds": 3.42,
+   "fps": 11.112,
+   "applyMs": {
+    "median": 85.085,
+    "p95": 98.997,
+    "mean": 85.276
+   },
+   "ackLatencyMs": {
+    "median": 86.739,
+    "p95": 101.18,
+    "mean": 86.896
+   },
+   "cellsWritten": {
+    "median": 129600,
+    "mean": 129600
+   },
+   "calls": {
+    "median": 4,
+    "mean": 4
+   },
+   "bytesPerFrame": {
+    "median": 131436,
+    "mean": 131436
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/values-cf/480x270/diff/pan",
+   "sink": "calc-uno",
+   "strategy": "values-cf",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "480x270",
+   "width": 480,
+   "height": 270,
+   "totalCells": 129600,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 67,
+   "warmupFrames": 2,
+   "wallSeconds": 5.446,
+   "fps": 12.303,
+   "applyMs": {
+    "median": 73.362,
+    "p95": 112.851,
+    "mean": 75.958
+   },
+   "ackLatencyMs": {
+    "median": 74.391,
+    "p95": 113.924,
+    "mean": 77.011
+   },
+   "cellsWritten": {
+    "median": 105592,
+    "mean": 103794.03
+   },
+   "calls": {
+    "median": 8,
+    "mean": 7.164
+   },
+   "bytesPerFrame": {
+    "median": 15063,
+    "mean": 14803
+   },
+   "changedCellsPct": 5.632,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/values-cf/480x270/diff/drive",
+   "sink": "calc-uno",
+   "strategy": "values-cf",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "480x270",
+   "width": 480,
+   "height": 270,
+   "totalCells": 129600,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 3.41,
+   "fps": 25.804,
+   "applyMs": {
+    "median": 34.045,
+    "p95": 46.108,
+    "mean": 34.374
+   },
+   "ackLatencyMs": {
+    "median": 34.773,
+    "p95": 49.321,
+    "mean": 35.226
+   },
+   "cellsWritten": {
+    "median": 18498,
+    "mean": 19416.216
+   },
+   "calls": {
+    "median": 10,
+    "mean": 10.568
+   },
+   "bytesPerFrame": {
+    "median": 2521,
+    "mean": 2527.432
+   },
+   "changedCellsPct": 0.821,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "values-cf",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior/80x45/full/pan",
+   "sink": "calc-uno",
+   "strategy": "interior",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "80x45",
+   "width": 80,
+   "height": 45,
+   "totalCells": 3600,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 38,
+   "warmupFrames": 2,
+   "wallSeconds": 1.315,
+   "fps": 28.894,
+   "applyMs": {
+    "median": 31.873,
+    "p95": 41.061,
+    "mean": 33.472
+   },
+   "ackLatencyMs": {
+    "median": 33.552,
+    "p95": 41.835,
+    "mean": 34.353
+   },
+   "cellsWritten": {
+    "median": 3600,
+    "mean": 3600
+   },
+   "calls": {
+    "median": 37,
+    "mean": 37
+   },
+   "bytesPerFrame": {
+    "median": 4086,
+    "mean": 4086
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior/80x45/diff/pan",
+   "sink": "calc-uno",
+   "strategy": "interior",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "80x45",
+   "width": 80,
+   "height": 45,
+   "totalCells": 3600,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 2.568,
+   "fps": 34.264,
+   "applyMs": {
+    "median": 26.864,
+    "p95": 41.017,
+    "mean": 28.238
+   },
+   "ackLatencyMs": {
+    "median": 27.552,
+    "p95": 41.844,
+    "mean": 28.943
+   },
+   "cellsWritten": {
+    "median": 305,
+    "mean": 307.17
+   },
+   "calls": {
+    "median": 29,
+    "mean": 30.045
+   },
+   "bytesPerFrame": {
+    "median": 745,
+    "mean": 742.989
+   },
+   "changedCellsPct": 6.094,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior/80x45/diff/drive",
+   "sink": "calc-uno",
+   "strategy": "interior",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "80x45",
+   "width": 80,
+   "height": 45,
+   "totalCells": 3600,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 0.666,
+   "fps": 132.178,
+   "applyMs": {
+    "median": 6.465,
+    "p95": 10.738,
+    "mean": 7.021
+   },
+   "ackLatencyMs": {
+    "median": 6.855,
+    "p95": 11.138,
+    "mean": 7.404
+   },
+   "cellsWritten": {
+    "median": 60,
+    "mean": 63.477
+   },
+   "calls": {
+    "median": 17,
+    "mean": 17.239
+   },
+   "bytesPerFrame": {
+    "median": 200,
+    "mean": 203.25
+   },
+   "changedCellsPct": 0.86,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior/160x90/full/pan",
+   "sink": "calc-uno",
+   "strategy": "interior",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "160x90",
+   "width": 160,
+   "height": 90,
+   "totalCells": 14400,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 38,
+   "warmupFrames": 2,
+   "wallSeconds": 1.759,
+   "fps": 21.597,
+   "applyMs": {
+    "median": 44.281,
+    "p95": 59.25,
+    "mean": 44.674
+   },
+   "ackLatencyMs": {
+    "median": 44.977,
+    "p95": 60.207,
+    "mean": 45.582
+   },
+   "cellsWritten": {
+    "median": 14400,
+    "mean": 14400
+   },
+   "calls": {
+    "median": 37,
+    "mean": 37.316
+   },
+   "bytesPerFrame": {
+    "median": 15156,
+    "mean": 15156
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior/160x90/diff/pan",
+   "sink": "calc-uno",
+   "strategy": "interior",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "160x90",
+   "width": 160,
+   "height": 90,
+   "totalCells": 14400,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 3.932,
+   "fps": 22.383,
+   "applyMs": {
+    "median": 42.484,
+    "p95": 51.892,
+    "mean": 43.335
+   },
+   "ackLatencyMs": {
+    "median": 43.414,
+    "p95": 53.668,
+    "mean": 44.165
+   },
+   "cellsWritten": {
+    "median": 1162,
+    "mean": 1164.295
+   },
+   "calls": {
+    "median": 35,
+    "mean": 34.034
+   },
+   "bytesPerFrame": {
+    "median": 2479,
+    "mean": 2454.091
+   },
+   "changedCellsPct": 6.092,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior/160x90/diff/drive",
+   "sink": "calc-uno",
+   "strategy": "interior",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "160x90",
+   "width": 160,
+   "height": 90,
+   "totalCells": 14400,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 1.875,
+   "fps": 46.924,
+   "applyMs": {
+    "median": 18.816,
+    "p95": 26.863,
+    "mean": 20.049
+   },
+   "ackLatencyMs": {
+    "median": 19.495,
+    "p95": 27.657,
+    "mean": 20.766
+   },
+   "cellsWritten": {
+    "median": 124,
+    "mean": 127.489
+   },
+   "calls": {
+    "median": 23,
+    "mean": 21.955
+   },
+   "bytesPerFrame": {
+    "median": 574,
+    "mean": 577.557
+   },
+   "changedCellsPct": 0.877,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior/240x135/full/pan",
+   "sink": "calc-uno",
+   "strategy": "interior",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "240x135",
+   "width": 240,
+   "height": 135,
+   "totalCells": 32400,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 38,
+   "warmupFrames": 2,
+   "wallSeconds": 2.676,
+   "fps": 14.2,
+   "applyMs": {
+    "median": 67.579,
+    "p95": 79.697,
+    "mean": 68.495
+   },
+   "ackLatencyMs": {
+    "median": 68.682,
+    "p95": 80.813,
+    "mean": 69.457
+   },
+   "cellsWritten": {
+    "median": 32400,
+    "mean": 32400
+   },
+   "calls": {
+    "median": 37,
+    "mean": 37
+   },
+   "bytesPerFrame": {
+    "median": 33426,
+    "mean": 33426
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior/240x135/diff/pan",
+   "sink": "calc-uno",
+   "strategy": "interior",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "240x135",
+   "width": 240,
+   "height": 135,
+   "totalCells": 32400,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 3.838,
+   "fps": 22.927,
+   "applyMs": {
+    "median": 40.225,
+    "p95": 52.694,
+    "mean": 41.847
+   },
+   "ackLatencyMs": {
+    "median": 40.895,
+    "p95": 53.427,
+    "mean": 42.694
+   },
+   "cellsWritten": {
+    "median": 2581,
+    "mean": 2577.83
+   },
+   "calls": {
+    "median": 35,
+    "mean": 34.841
+   },
+   "bytesPerFrame": {
+    "median": 4876,
+    "mean": 4753.102
+   },
+   "changedCellsPct": 5.838,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior/240x135/diff/drive",
+   "sink": "calc-uno",
+   "strategy": "interior",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "240x135",
+   "width": 240,
+   "height": 135,
+   "totalCells": 32400,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 1.377,
+   "fps": 63.886,
+   "applyMs": {
+    "median": 12.279,
+    "p95": 24.086,
+    "mean": 13.991
+   },
+   "ackLatencyMs": {
+    "median": 12.758,
+    "p95": 24.661,
+    "mean": 14.649
+   },
+   "cellsWritten": {
+    "median": 253,
+    "mean": 255.75
+   },
+   "calls": {
+    "median": 23,
+    "mean": 22.818
+   },
+   "bytesPerFrame": {
+    "median": 1003,
+    "mean": 1002.75
+   },
+   "changedCellsPct": 0.785,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior/320x180/full/pan",
+   "sink": "calc-uno",
+   "strategy": "interior",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "320x180",
+   "width": 320,
+   "height": 180,
+   "totalCells": 57600,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 38,
+   "warmupFrames": 2,
+   "wallSeconds": 2.318,
+   "fps": 16.395,
+   "applyMs": {
+    "median": 57.009,
+    "p95": 83.564,
+    "mean": 58.626
+   },
+   "ackLatencyMs": {
+    "median": 57.931,
+    "p95": 84.298,
+    "mean": 59.548
+   },
+   "cellsWritten": {
+    "median": 57600,
+    "mean": 57600
+   },
+   "calls": {
+    "median": 37,
+    "mean": 37.316
+   },
+   "bytesPerFrame": {
+    "median": 58896,
+    "mean": 58896
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior/320x180/diff/pan",
+   "sink": "calc-uno",
+   "strategy": "interior",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "320x180",
+   "width": 320,
+   "height": 180,
+   "totalCells": 57600,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 70,
+   "warmupFrames": 2,
+   "wallSeconds": 5.715,
+   "fps": 12.249,
+   "applyMs": {
+    "median": 79.39,
+    "p95": 97.077,
+    "mean": 79.08
+   },
+   "ackLatencyMs": {
+    "median": 80.211,
+    "p95": 98.214,
+    "mean": 80.042
+   },
+   "cellsWritten": {
+    "median": 4275,
+    "mean": 4284.343
+   },
+   "calls": {
+    "median": 35,
+    "mean": 35.129
+   },
+   "bytesPerFrame": {
+    "median": 7640,
+    "mean": 7424.657
+   },
+   "changedCellsPct": 5.53,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior/320x180/diff/drive",
+   "sink": "calc-uno",
+   "strategy": "interior",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "320x180",
+   "width": 320,
+   "height": 180,
+   "totalCells": 57600,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 2.299,
+   "fps": 38.277,
+   "applyMs": {
+    "median": 23.249,
+    "p95": 29.953,
+    "mean": 23.67
+   },
+   "ackLatencyMs": {
+    "median": 24.104,
+    "p95": 31.093,
+    "mean": 24.45
+   },
+   "cellsWritten": {
+    "median": 493,
+    "mean": 496.932
+   },
+   "calls": {
+    "median": 23,
+    "mean": 23.102
+   },
+   "bytesPerFrame": {
+    "median": 1509,
+    "mean": 1504.25
+   },
+   "changedCellsPct": 0.859,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior/480x270/full/pan",
+   "sink": "calc-uno",
+   "strategy": "interior",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "480x270",
+   "width": 480,
+   "height": 270,
+   "totalCells": 129600,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 38,
+   "warmupFrames": 2,
+   "wallSeconds": 5.279,
+   "fps": 7.198,
+   "applyMs": {
+    "median": 126.336,
+    "p95": 177.272,
+    "mean": 134.08
+   },
+   "ackLatencyMs": {
+    "median": 127.464,
+    "p95": 178.848,
+    "mean": 135.452
+   },
+   "cellsWritten": {
+    "median": 129600,
+    "mean": 129600
+   },
+   "calls": {
+    "median": 37,
+    "mean": 37
+   },
+   "bytesPerFrame": {
+    "median": 131436,
+    "mean": 131436
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior/480x270/diff/pan",
+   "sink": "calc-uno",
+   "strategy": "interior",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "480x270",
+   "width": 480,
+   "height": 270,
+   "totalCells": 129600,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 39,
+   "warmupFrames": 2,
+   "wallSeconds": 5.528,
+   "fps": 7.054,
+   "applyMs": {
+    "median": 133.607,
+    "p95": 160.786,
+    "mean": 137.482
+   },
+   "ackLatencyMs": {
+    "median": 136.525,
+    "p95": 161.767,
+    "mean": 138.636
+   },
+   "cellsWritten": {
+    "median": 9899,
+    "mean": 9847
+   },
+   "calls": {
+    "median": 35,
+    "mean": 35
+   },
+   "bytesPerFrame": {
+    "median": 15072,
+    "mean": 14624.692
+   },
+   "changedCellsPct": 5.585,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior/480x270/diff/drive",
+   "sink": "calc-uno",
+   "strategy": "interior",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "480x270",
+   "width": 480,
+   "height": 270,
+   "totalCells": 129600,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 2.755,
+   "fps": 31.944,
+   "applyMs": {
+    "median": 25.654,
+    "p95": 36.626,
+    "mean": 27.211
+   },
+   "ackLatencyMs": {
+    "median": 26.46,
+    "p95": 37.373,
+    "mean": 27.957
+   },
+   "cellsWritten": {
+    "median": 1043,
+    "mean": 1066.227
+   },
+   "calls": {
+    "median": 23,
+    "mean": 23.261
+   },
+   "bytesPerFrame": {
+    "median": 2521,
+    "mean": 2527.432
+   },
+   "changedCellsPct": 0.821,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior-runs/80x45/full/pan",
+   "sink": "calc-uno",
+   "strategy": "interior-runs",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "80x45",
+   "width": 80,
+   "height": 45,
+   "totalCells": 3600,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 14,
+   "warmupFrames": 2,
+   "wallSeconds": 5.102,
+   "fps": 2.744,
+   "applyMs": {
+    "median": 362.349,
+    "p95": 407.171,
+    "mean": 362.982
+   },
+   "ackLatencyMs": {
+    "median": 363.088,
+    "p95": 408.164,
+    "mean": 364.098
+   },
+   "cellsWritten": {
+    "median": 3600,
+    "mean": 3600
+   },
+   "calls": {
+    "median": 530,
+    "mean": 530.714
+   },
+   "bytesPerFrame": {
+    "median": 4086,
+    "mean": 4086
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior-runs",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior-runs/80x45/diff/pan",
+   "sink": "calc-uno",
+   "strategy": "interior-runs",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "80x45",
+   "width": 80,
+   "height": 45,
+   "totalCells": 3600,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 24,
+   "warmupFrames": 2,
+   "wallSeconds": 5.319,
+   "fps": 4.512,
+   "applyMs": {
+    "median": 212.182,
+    "p95": 283.587,
+    "mean": 220.509
+   },
+   "ackLatencyMs": {
+    "median": 212.813,
+    "p95": 284.489,
+    "mean": 221.355
+   },
+   "cellsWritten": {
+    "median": 303,
+    "mean": 307.708
+   },
+   "calls": {
+    "median": 326,
+    "mean": 326.75
+   },
+   "bytesPerFrame": {
+    "median": 745,
+    "mean": 756.958
+   },
+   "changedCellsPct": 6.127,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior-runs",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior-runs/80x45/diff/drive",
+   "sink": "calc-uno",
+   "strategy": "interior-runs",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "80x45",
+   "width": 80,
+   "height": 45,
+   "totalCells": 3600,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 1.451,
+   "fps": 60.659,
+   "applyMs": {
+    "median": 13.148,
+    "p95": 28.177,
+    "mean": 15.426
+   },
+   "ackLatencyMs": {
+    "median": 14.394,
+    "p95": 28.901,
+    "mean": 16.266
+   },
+   "cellsWritten": {
+    "median": 60,
+    "mean": 63.477
+   },
+   "calls": {
+    "median": 30,
+    "mean": 30.864
+   },
+   "bytesPerFrame": {
+    "median": 200,
+    "mean": 203.25
+   },
+   "changedCellsPct": 0.86,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior-runs",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior-runs/160x90/full/pan",
+   "sink": "calc-uno",
+   "strategy": "interior-runs",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "160x90",
+   "width": 160,
+   "height": 90,
+   "totalCells": 14400,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 6,
+   "warmupFrames": 2,
+   "wallSeconds": 7.816,
+   "fps": 0.768,
+   "applyMs": {
+    "median": 1268.557,
+    "p95": 1468.488,
+    "mean": 1299.608
+   },
+   "ackLatencyMs": {
+    "median": 1269.544,
+    "p95": 1469.6,
+    "mean": 1301.822
+   },
+   "cellsWritten": {
+    "median": 14400,
+    "mean": 14400
+   },
+   "calls": {
+    "median": 1736,
+    "mean": 1736
+   },
+   "bytesPerFrame": {
+    "median": 15156,
+    "mean": 15156
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior-runs",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior-runs/160x90/diff/pan",
+   "sink": "calc-uno",
+   "strategy": "interior-runs",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "160x90",
+   "width": 160,
+   "height": 90,
+   "totalCells": 14400,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 6,
+   "warmupFrames": 2,
+   "wallSeconds": 6.419,
+   "fps": 0.935,
+   "applyMs": {
+    "median": 1060.548,
+    "p95": 1093.783,
+    "mean": 1067.855
+   },
+   "ackLatencyMs": {
+    "median": 1061.695,
+    "p95": 1094.751,
+    "mean": 1069.13
+   },
+   "cellsWritten": {
+    "median": 1242,
+    "mean": 1243.333
+   },
+   "calls": {
+    "median": 1480,
+    "mean": 1485.667
+   },
+   "bytesPerFrame": {
+    "median": 2793,
+    "mean": 2762.333
+   },
+   "changedCellsPct": 6.535,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior-runs",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior-runs/160x90/diff/drive",
+   "sink": "calc-uno",
+   "strategy": "interior-runs",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "160x90",
+   "width": 160,
+   "height": 90,
+   "totalCells": 14400,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 88,
+   "warmupFrames": 2,
+   "wallSeconds": 3.198,
+   "fps": 27.516,
+   "applyMs": {
+    "median": 35.754,
+    "p95": 48.288,
+    "mean": 35.063
+   },
+   "ackLatencyMs": {
+    "median": 36.555,
+    "p95": 49.074,
+    "mean": 35.825
+   },
+   "cellsWritten": {
+    "median": 124,
+    "mean": 127.489
+   },
+   "calls": {
+    "median": 48,
+    "mean": 47.841
+   },
+   "bytesPerFrame": {
+    "median": 574,
+    "mean": 577.557
+   },
+   "changedCellsPct": 0.877,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior-runs",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior-runs/320x180/full/pan",
+   "sink": "calc-uno",
+   "strategy": "interior-runs",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "320x180",
+   "width": 320,
+   "height": 180,
+   "totalCells": 57600,
+   "mode": "full",
+   "scene": "pan",
+   "framesMeasured": 6,
+   "warmupFrames": 2,
+   "wallSeconds": 19.685,
+   "fps": 0.305,
+   "applyMs": {
+    "median": 2370.748,
+    "p95": 4622.277,
+    "mean": 3276.534
+   },
+   "ackLatencyMs": {
+    "median": 2372.658,
+    "p95": 4623.377,
+    "mean": 3277.982
+   },
+   "cellsWritten": {
+    "median": 57600,
+    "mean": 57600
+   },
+   "calls": {
+    "median": 5360,
+    "mean": 5370
+   },
+   "bytesPerFrame": {
+    "median": 58896,
+    "mean": 58896
+   },
+   "changedCellsPct": 100,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior-runs",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior-runs/320x180/diff/pan",
+   "sink": "calc-uno",
+   "strategy": "interior-runs",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "320x180",
+   "width": 320,
+   "height": 180,
+   "totalCells": 57600,
+   "mode": "diff",
+   "scene": "pan",
+   "framesMeasured": 6,
+   "warmupFrames": 2,
+   "wallSeconds": 18.864,
+   "fps": 0.318,
+   "applyMs": {
+    "median": 2994.196,
+    "p95": 3863.769,
+    "mean": 3140.087
+   },
+   "ackLatencyMs": {
+    "median": 2995.202,
+    "p95": 3864.756,
+    "mean": 3141.673
+   },
+   "cellsWritten": {
+    "median": 4437,
+    "mean": 4473
+   },
+   "calls": {
+    "median": 4920,
+    "mean": 4926.333
+   },
+   "bytesPerFrame": {
+    "median": 8039,
+    "mean": 8060
+   },
+   "changedCellsPct": 5.834,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior-runs",
+   "verified": true
+  },
+  {
+   "label": "calc-uno/interior-runs/320x180/diff/drive",
+   "sink": "calc-uno",
+   "strategy": "interior-runs",
+   "appVersion": "LibreOffice 24.2.7.2",
+   "resolution": "320x180",
+   "width": 320,
+   "height": 180,
+   "totalCells": 57600,
+   "mode": "diff",
+   "scene": "drive",
+   "framesMeasured": 42,
+   "warmupFrames": 2,
+   "wallSeconds": 2.476,
+   "fps": 16.96,
+   "applyMs": {
+    "median": 51.283,
+    "p95": 75.503,
+    "mean": 56.318
+   },
+   "ackLatencyMs": {
+    "median": 52.639,
+    "p95": 76.462,
+    "mean": 57.226
+   },
+   "cellsWritten": {
+    "median": 493,
+    "mean": 501.19
+   },
+   "calls": {
+    "median": 64,
+    "mean": 65.19
+   },
+   "bytesPerFrame": {
+    "median": 1498,
+    "mean": 1497.048
+   },
+   "changedCellsPct": 0.865,
+   "droppedFrames": 0,
+   "edits": 0,
+   "inputs": 0,
+   "strategyRequested": "interior-runs",
+   "verified": true
+  }
+ ]
+}

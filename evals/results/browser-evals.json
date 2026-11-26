@@ -1,0 +1,486 @@
+{
+  "env": {
+    "browser": "153.0.8010.12",
+    "renderer": "ANGLE (Mesa, Vulkan 1.4.335 (llvmpipe (LLVM 20.1.2 256 bits) (0x00000000)), llvmpipe)",
+    "cpus": 2,
+    "cpuModel": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+    "platform": "linux 6.18.44-fc-v880",
+    "date": "2026-11-26T09:23:11.916Z",
+    "note": "Headless Chrome on a CPU rasteriser (see renderer string; no GPU). Numbers are a floor, not representative of a GPU."
+  },
+  "checks": [
+    {
+      "id": "S1 cell store == pipeline frame (every cell)",
+      "pass": true,
+      "detail": "14400/14400"
+    },
+    {
+      "id": "S1 drawn pixels == cell fill (5 points per sampled cell, steady state, no forced keyframe)",
+      "pass": true,
+      "detail": "760/760 []"
+    },
+    {
+      "id": "S1 mean colour error, cell vs rendered pixel (RGB distance)",
+      "pass": true,
+      "detail": "6.22"
+    },
+    {
+      "id": "S2 selecting a GAME cell shows address and colour",
+      "pass": true,
+      "detail": {
+        "name": "BS44",
+        "formula": "143",
+        "status": "pixel (70, 40) · palette index 143 · #D4D4C4 · rgb(212, 212, 196)",
+        "expected": 139
+      }
+    },
+    {
+      "id": "S3 sheet mode shows no image/video and no WebGL canvas; only the grid",
+      "pass": true,
+      "detail": {
+        "imgs": 0,
+        "canvases": [
+          "cf-grid"
+        ],
+        "directVisible": false,
+        "view3d": "none",
+        "gridDrawSources": [
+          "cell-bitmap"
+        ]
+      }
+    },
+    {
+      "id": "S3 the only image ever drawn onto the grid is the cell bitmap (built from the cell store)",
+      "pass": true,
+      "detail": [
+        "cell-bitmap"
+      ]
+    },
+    {
+      "id": "S4 editing WORLD!Weather changes the simulation",
+      "pass": true,
+      "detail": {
+        "before": "Clear",
+        "after": "Rain",
+        "err": null,
+        "bad": "Weather must be one of: Clear, Cloudy, Rain, Storm, Fog",
+        "badNum": "Gravity must be a number",
+        "sheet": "WORLD"
+      }
+    },
+    {
+      "id": "S6 invalid cell values are rejected with a message",
+      "pass": true,
+      "detail": {
+        "bad": "Weather must be one of: Clear, Cloudy, Rain, Storm, Fog",
+        "badNum": "Gravity must be a number"
+      }
+    },
+    {
+      "id": "S5 RULES formula edit changes the value the game uses",
+      "pass": true,
+      "detail": {
+        "before": 1,
+        "after": 2,
+        "ok": null,
+        "unsafe": "Unknown function window.alert(). Supported: MIN, MAX, ABS, SQRT, ROUND, FLOOR, CEILING, INT, POWER, MOD, SIN, COS, PI, AVERAGE, SUM, MEDIAN, IF, AND, OR, NOT",
+        "cyc": "Circular reference between rules",
+        "framesAdvanced": 13
+      }
+    },
+    {
+      "id": "S6 unsafe / circular formulas rejected, simulation keeps running",
+      "pass": true,
+      "detail": {
+        "before": 1,
+        "after": 2,
+        "ok": null,
+        "unsafe": "Unknown function window.alert(). Supported: MIN, MAX, ABS, SQRT, ROUND, FLOOR, CEILING, INT, POWER, MOD, SIN, COS, PI, AVERAGE, SUM, MEDIAN, IF, AND, OR, NOT",
+        "cyc": "Circular reference between rules",
+        "framesAdvanced": 13
+      }
+    },
+    {
+      "id": "S5 doubled TrafficDensity formula -> more traffic",
+      "pass": true,
+      "detail": {
+        "before": 33,
+        "after": 52,
+        "target": 52
+      }
+    },
+    {
+      "id": "no page errors (authenticity session)",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "id": "no page errors (scene session)",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "id": "Fieldbook runs in the same shell",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "id": "mobile viewport renders without errors",
+      "pass": true,
+      "detail": []
+    }
+  ],
+  "perf": [
+    {
+      "preset": "high",
+      "res": "80x45",
+      "cells": 3600,
+      "diff": {
+        "fps": 13.8,
+        "medianFrameMs": 66.7,
+        "p95FrameMs": 100,
+        "readbackMs": 69.49,
+        "quantizeMs": 0.461,
+        "diffMs": 0.04,
+        "presentMs": 1.157,
+        "simMs": 1.335,
+        "changedCells": 1506,
+        "writtenCells": 1904,
+        "simHz": 63,
+        "heapMB": 55
+      },
+      "full": {
+        "fps": 14,
+        "medianFrameMs": 66.7,
+        "p95FrameMs": 100,
+        "readbackMs": 68.27,
+        "quantizeMs": 0.213,
+        "diffMs": 0.015,
+        "presentMs": 0.922,
+        "simMs": 1.388,
+        "changedCells": 3600,
+        "writtenCells": 3600,
+        "simHz": 63,
+        "heapMB": 59
+      }
+    },
+    {
+      "preset": "high",
+      "res": "160x90",
+      "cells": 14400,
+      "diff": {
+        "fps": 10.6,
+        "medianFrameMs": 99.9,
+        "p95FrameMs": 116.7,
+        "readbackMs": 92.39,
+        "quantizeMs": 0.98,
+        "diffMs": 0.15,
+        "presentMs": 1.302,
+        "simMs": 1.375,
+        "changedCells": 7400,
+        "writtenCells": 8514,
+        "simHz": 63,
+        "heapMB": 63.6
+      },
+      "full": {
+        "fps": 10.5,
+        "medianFrameMs": 100,
+        "p95FrameMs": 133.3,
+        "readbackMs": 95.06,
+        "quantizeMs": 0.707,
+        "diffMs": 0.068,
+        "presentMs": 1.357,
+        "simMs": 1.654,
+        "changedCells": 14400,
+        "writtenCells": 14400,
+        "simHz": 63,
+        "heapMB": 51
+      }
+    },
+    {
+      "preset": "high",
+      "res": "240x135",
+      "cells": 32400,
+      "diff": {
+        "fps": 7.4,
+        "medianFrameMs": 133.3,
+        "p95FrameMs": 200,
+        "readbackMs": 135.94,
+        "quantizeMs": 1.412,
+        "diffMs": 0.246,
+        "presentMs": 1.525,
+        "simMs": 1.477,
+        "changedCells": 16042,
+        "writtenCells": 18555,
+        "simHz": 58,
+        "heapMB": 62.9
+      },
+      "full": {
+        "fps": 8.8,
+        "medianFrameMs": 116.7,
+        "p95FrameMs": 150.1,
+        "readbackMs": 113.82,
+        "quantizeMs": 0.905,
+        "diffMs": 0.073,
+        "presentMs": 1.313,
+        "simMs": 1.271,
+        "changedCells": 32400,
+        "writtenCells": 32400,
+        "simHz": 62,
+        "heapMB": 66.2
+      }
+    },
+    {
+      "preset": "high",
+      "res": "320x180",
+      "cells": 57600,
+      "diff": {
+        "fps": 4.8,
+        "medianFrameMs": 216.7,
+        "p95FrameMs": 233.4,
+        "readbackMs": 233.64,
+        "quantizeMs": 3.215,
+        "diffMs": 0.662,
+        "presentMs": 2.383,
+        "simMs": 2.007,
+        "changedCells": 29290,
+        "writtenCells": 34071,
+        "simHz": 40,
+        "heapMB": 60.1
+      },
+      "full": {
+        "fps": 6,
+        "medianFrameMs": 166.6,
+        "p95FrameMs": 233.3,
+        "readbackMs": 167.58,
+        "quantizeMs": 1.674,
+        "diffMs": 0.183,
+        "presentMs": 2.098,
+        "simMs": 1.753,
+        "changedCells": 57600,
+        "writtenCells": 57600,
+        "simHz": 52,
+        "heapMB": 61.3
+      }
+    },
+    {
+      "preset": "high",
+      "res": "480x270",
+      "cells": 129600,
+      "diff": {
+        "fps": 3.4,
+        "medianFrameMs": 283.4,
+        "p95FrameMs": 400,
+        "readbackMs": 347.35,
+        "quantizeMs": 5.786,
+        "diffMs": 0.913,
+        "presentMs": 3.186,
+        "simMs": 1.295,
+        "changedCells": 64818,
+        "writtenCells": 75218,
+        "simHz": 32,
+        "heapMB": 65
+      },
+      "full": {
+        "fps": 3.8,
+        "medianFrameMs": 266.7,
+        "p95FrameMs": 366.6,
+        "readbackMs": 285.9,
+        "quantizeMs": 3.336,
+        "diffMs": 0.458,
+        "presentMs": 2.578,
+        "simMs": 1.364,
+        "changedCells": 129600,
+        "writtenCells": 129600,
+        "simHz": 32,
+        "heapMB": 55.3
+      }
+    },
+    {
+      "preset": "low",
+      "res": "80x45",
+      "cells": 3600,
+      "diff": {
+        "fps": 27.4,
+        "medianFrameMs": 33.3,
+        "p95FrameMs": 50.1,
+        "readbackMs": 33.72,
+        "quantizeMs": 0.326,
+        "diffMs": 0.037,
+        "presentMs": 1.044,
+        "simMs": 0.731,
+        "changedCells": 1261,
+        "writtenCells": 1542,
+        "simHz": 62,
+        "heapMB": 58.3
+      },
+      "full": {
+        "fps": 39.5,
+        "medianFrameMs": 16.8,
+        "p95FrameMs": 33.4,
+        "readbackMs": 22.65,
+        "quantizeMs": 0.244,
+        "diffMs": 0.023,
+        "presentMs": 0.807,
+        "simMs": 0.493,
+        "changedCells": 3600,
+        "writtenCells": 3600,
+        "simHz": 61,
+        "heapMB": 60.3
+      }
+    },
+    {
+      "preset": "low",
+      "res": "160x90",
+      "cells": 14400,
+      "diff": {
+        "fps": 18.6,
+        "medianFrameMs": 50,
+        "p95FrameMs": 83.3,
+        "readbackMs": 49.74,
+        "quantizeMs": 0.663,
+        "diffMs": 0.103,
+        "presentMs": 1.276,
+        "simMs": 0.949,
+        "changedCells": 5270,
+        "writtenCells": 6216,
+        "simHz": 62,
+        "heapMB": 53.7
+      },
+      "full": {
+        "fps": 35.3,
+        "medianFrameMs": 33.3,
+        "p95FrameMs": 50,
+        "readbackMs": 27.84,
+        "quantizeMs": 0.354,
+        "diffMs": 0.025,
+        "presentMs": 1.05,
+        "simMs": 0.493,
+        "changedCells": 14400,
+        "writtenCells": 14400,
+        "simHz": 62,
+        "heapMB": 50.4
+      }
+    },
+    {
+      "preset": "low",
+      "res": "240x135",
+      "cells": 32400,
+      "diff": {
+        "fps": 14.2,
+        "medianFrameMs": 66.7,
+        "p95FrameMs": 100,
+        "readbackMs": 69.04,
+        "quantizeMs": 1.117,
+        "diffMs": 0.209,
+        "presentMs": 1.478,
+        "simMs": 1.219,
+        "changedCells": 12964,
+        "writtenCells": 15036,
+        "simHz": 62,
+        "heapMB": 59.7
+      },
+      "full": {
+        "fps": 14.3,
+        "medianFrameMs": 66.7,
+        "p95FrameMs": 133.3,
+        "readbackMs": 63.99,
+        "quantizeMs": 1.18,
+        "diffMs": 0.069,
+        "presentMs": 1.488,
+        "simMs": 1.056,
+        "changedCells": 32400,
+        "writtenCells": 32400,
+        "simHz": 62,
+        "heapMB": 64
+      }
+    },
+    {
+      "preset": "low",
+      "res": "320x180",
+      "cells": 57600,
+      "diff": {
+        "fps": 9.2,
+        "medianFrameMs": 116.6,
+        "p95FrameMs": 133.4,
+        "readbackMs": 111.53,
+        "quantizeMs": 1.355,
+        "diffMs": 0.486,
+        "presentMs": 1.861,
+        "simMs": 1.409,
+        "changedCells": 25614,
+        "writtenCells": 28745,
+        "simHz": 63,
+        "heapMB": 58.9
+      },
+      "full": {
+        "fps": 13.5,
+        "medianFrameMs": 83.3,
+        "p95FrameMs": 116.5,
+        "readbackMs": 75.62,
+        "quantizeMs": 1.298,
+        "diffMs": 0.096,
+        "presentMs": 1.846,
+        "simMs": 1.009,
+        "changedCells": 57600,
+        "writtenCells": 57600,
+        "simHz": 63,
+        "heapMB": 56.3
+      }
+    },
+    {
+      "preset": "low",
+      "res": "480x270",
+      "cells": 129600,
+      "diff": {
+        "fps": 5.4,
+        "medianFrameMs": 183.4,
+        "p95FrameMs": 250,
+        "readbackMs": 218.46,
+        "quantizeMs": 3.419,
+        "diffMs": 0.948,
+        "presentMs": 2.71,
+        "simMs": 1.665,
+        "changedCells": 55257,
+        "writtenCells": 62674,
+        "simHz": 44,
+        "heapMB": 63.4
+      },
+      "full": {
+        "fps": 7.3,
+        "medianFrameMs": 133.3,
+        "p95FrameMs": 183.4,
+        "readbackMs": 138.01,
+        "quantizeMs": 1.935,
+        "diffMs": 0.201,
+        "presentMs": 2.553,
+        "simMs": 1.459,
+        "changedCells": 129600,
+        "writtenCells": 129600,
+        "simHz": 58,
+        "heapMB": 65.6
+      }
+    }
+  ],
+  "screenshots": [
+    "evals/screenshots/sheet-world-rain.png",
+    "evals/screenshots/sheet-rules-edited.png",
+    "evals/screenshots/sheet-80x45.png",
+    "evals/screenshots/sheet-320x180.png",
+    "evals/screenshots/sheet-480x270.png",
+    "evals/screenshots/day-exploration.png",
+    "evals/screenshots/character-on-foot.png",
+    "evals/screenshots/beachfront-driving.png",
+    "evals/screenshots/night-neon.png",
+    "evals/screenshots/police-pursuit.png",
+    "evals/screenshots/vehicle-collision.png",
+    "evals/screenshots/rain-storm.png",
+    "evals/screenshots/sheet-night-pursuit.png",
+    "evals/screenshots/sheet-gridlines-zoom.png",
+    "evals/screenshots/sheet-zoomed-cells.png",
+    "evals/screenshots/sim-editor.png",
+    "evals/screenshots/fieldbook-sheet.png",
+    "evals/screenshots/fieldbook-gridlines.png",
+    "evals/screenshots/mobile-sheet.png"
+  ]
+}

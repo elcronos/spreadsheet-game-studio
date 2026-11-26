@@ -1,0 +1,13 @@
+import { makeWorld } from "../../tests/gridlock/harness";
+const { world, step } = makeWorld();
+const t0 = performance.now();
+let stopped = 0;
+step(60, () => {});
+const ms = performance.now() - t0;
+const ai = world.vehicles.filter(v => v.driver === "ai");
+console.log("sim 60s in", ms.toFixed(0), "ms; vehicles", world.vehicles.length, "ai", ai.length, "peds", world.peds.length);
+console.log("ai speeds", ai.slice(0, 12).map(v => v.speed.toFixed(1)).join(" "));
+console.log("waited at red", world.vehicles.filter(v => v.tag.waited).length, "crashes stats", JSON.stringify(world.stats));
+console.log("nan?", world.vehicles.some(v => !Number.isFinite(v.x)), "destroyed", world.vehicles.filter(v=>v.destroyed).length, "avg health", (ai.reduce((s,v)=>s+v.health/v.maxHealth,0)/ai.length).toFixed(2));
+const moving = world.peds.filter(p => Math.hypot(p.vx, p.vz) > 0.3).length;
+console.log("peds moving", moving, "/", world.peds.length);

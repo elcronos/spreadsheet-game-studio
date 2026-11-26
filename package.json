@@ -1,0 +1,47 @@
+{
+  "name": "spreadsheet-game-studio",
+  "version": "1.0.0",
+  "description": "Games where every pixel is a spreadsheet cell: an engine, two original games and agent skills for the browser, Excel, Calc and Google Sheets",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --import tsx --test tests/*.test.ts tests/fieldbook/*.test.ts tests/excel/*.test.ts examples/cell-catch/*.test.ts",
+    "typecheck": "tsc -p .",
+    "bench:pipeline": "node --import tsx scripts/bench-pipeline.ts",
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "test:gameplay": "node --import tsx --test tests/gridlock/*.test.ts",
+    "test:bridge": "bash scripts/excel/run_tests.sh",
+    "test:all": "npm test && npm run test:gameplay && npm run test:bridge",
+    "eval:browser": "node evals/browser-evals.mjs",
+    "eval:missions": "node --import tsx scripts/eval-missions.ts",
+    "build:gsheets": "node scripts/build-gsheets.mjs",
+    "test:gsheets": "node --import tsx --test tests/gsheets/gsheets.test.ts tests/gsheets/phone.test.ts tests/gsheets/port.test.ts && node --import tsx tests/gsheets/e2e.mjs",
+    "build:gsheets-phone": "node scripts/build-gsheets-phone.mjs",
+    "gsheets:port": "node scripts/gsheets-port.mjs",
+    "record:highlights": "node scripts/record-highlights.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.11",
+    "@types/three": "^0.170.0",
+    "@types/ws": "^8.18.2",
+    "esbuild": "^0.24.0",
+    "playwright": "^1.63.0",
+    "pngjs": "^7.0.0",
+    "sharp": "^0.35.5",
+    "tsx": "^4.23.15",
+    "typescript": "^5.6.3",
+    "ws": "^8.23.0"
+  },
+  "type": "module",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/elcronos/spreadsheet-game-studio"
+  }
+}

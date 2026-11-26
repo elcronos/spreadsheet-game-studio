@@ -1,0 +1,16 @@
+import { makeWorld } from "../../tests/gridlock/harness";
+import { RoadDriver, legFrom } from "../../examples/gridlock-city/src/sim/nav";
+const { world, step, reg } = makeWorld(3);
+reg.edit("world.population", 0); world.vehicles.length = 0; reg.edit("world.pedDensity", 0);
+const N = (x: number, z: number) => world.city.nodes.find(n => n.x === x && n.z === z)!.id;
+const e1 = world.city.nodes[N(110, -180)].edges.find(e => { const ed = world.city.edges[e]; return ed.a === N(110, -90) || ed.b === N(110, -90); })!;
+const e2 = world.city.nodes[N(110, -90)].edges.find(e => { const ed = world.city.edges[e]; return ed.a === N(30, -90) || ed.b === N(30, -90); })!;
+const v = world.spawnParked(process.argv[2] as any ?? "van", 108.2, -160, 0);
+world.enterVehicle(v, true);
+const d = new RoadDriver(world.city, legFrom(world.city, e1, N(110, -180)), { cruise: +(process.argv[3] ?? 17), obeySignals: false, avoid: true, lane: 0, aggression: 0.2 }, world.rand);
+d.wps = d.wps.filter(w => w.z > -158);
+d.setPlan([legFrom(world.city, e2, N(110, -90))]);
+world.autopilot = (dt) => d.drive(v, dt, world.t, [], null);
+let n = 0; let maxZ = -1e9;
+step(14, () => { if (n++ % 30 === 0) console.log(world.t.toFixed(1), v.x.toFixed(1), v.z.toFixed(1), v.speed.toFixed(1), "steer", v.steerInput.toFixed(2), "wp", d.wps[0] && d.wps[0].x.toFixed(0) + "," + d.wps[0].z.toFixed(0)); maxZ = Math.max(maxZ, v.z); });
+console.log("max z reached", maxZ.toFixed(1), "(lane -91.8; south kerb -83)");

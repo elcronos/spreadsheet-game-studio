@@ -1,0 +1,12 @@
+import { makeWorld } from "../../tests/gridlock/harness";
+const { world, step, reg } = makeWorld(11);
+const car = world.vehicles.find((v) => v.kind === "sports")!;
+world.enterVehicle(car, true); car.place(70, 2, -Math.PI / 2);
+reg.edit("player.invincible", true);
+reg.edit("player.alert", 4); world.police.lastSeen = world.t;
+step(15, () => { world.police.lastSeen = world.t; world.police.bustedTimer = 0; });
+const roles = () => world.vehicles.filter((v) => v.kind === "police" && v.driver === "ai" && (v.tag.cop as any)?.role !== "patrol").length;
+console.log("engaged at heat 4:", roles());
+reg.setRuleFormula("PoliceBudget", "=1");
+step(20, () => { world.police.lastSeen = world.t; world.police.bustedTimer = 0; });
+console.log("engaged 20 s after PoliceBudget=1:", roles());

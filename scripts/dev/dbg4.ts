@@ -1,0 +1,10 @@
+import { makeWorld } from "../../tests/gridlock/harness";
+import { RoadDriver, legFrom, legEndNode } from "../../examples/gridlock-city/src/sim/nav";
+import { nearestEdgePoint } from "../../examples/gridlock-city/src/city";
+const { world } = makeWorld(21);
+world.missions.start("race", true);
+const v = world.playerVehicle!;
+const near = nearestEdgePoint(world.city, v.x, v.z);
+console.log("car", v.x, v.z, v.heading, "edge", near.edge.id, near.edge.name, world.city.nodes[near.edge.a], world.city.nodes[near.edge.b]);
+const legs = world.missions.raceLegs();
+console.log("legs", legs.map(l => { const e = world.city.edges[l.edge]; const n = world.city.nodes[l.dir === 1 ? e.a : e.b]; return `${n.x},${n.z}>${e.name}`; }).join(" | "));

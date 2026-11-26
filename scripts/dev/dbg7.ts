@@ -1,0 +1,10 @@
+import { makeWorld, autopilot } from "../../tests/gridlock/harness";
+const { world, step } = makeWorld(21);
+const car = world.vehicles.find(v => v.kind === "sports")!;
+world.enterVehicle(car, true);
+car.place(340, 0, -Math.PI / 2);
+const tgt = world.city.pois.hideout;
+const p: any = autopilot(world, car, () => tgt, 17);
+world.autopilot = p;
+let n = 0;
+step(30, () => { if (n++ % 60) return; const d = p.driver; console.log(world.t.toFixed(0), car.x.toFixed(1), car.z.toFixed(1), "spd", car.speed.toFixed(1), "thr", car.throttle.toFixed(2), "st", car.steerInput.toFixed(2), "wp0", d.wps[0] && `${d.wps[0].x.toFixed(0)},${d.wps[0].z.toFixed(0)}`, "rev", d.reverseTimer.toFixed(1), "stuck", d.stuck.toFixed(1), "plan", d.plan.length); });

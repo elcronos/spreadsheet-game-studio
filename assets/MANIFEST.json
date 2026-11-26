@@ -1,0 +1,20 @@
+{
+  "policy": "No external image, model, audio or font files are shipped. All game assets are generated at runtime by code in this repository.",
+  "assets": [
+    { "id": "gridlock-textures", "kind": "textures (asphalt, pavement, promenade, sand, grass, wood, roof, concrete, facade atlases, awning stripes, palm frond, glow, clouds, car decals)", "origin": "procedurally painted on HTML canvas at load time", "source": "examples/gridlock-city/src/render/textures.ts", "author": "this project", "licence": "MIT" },
+    { "id": "gridlock-signs", "kind": "neon sign text atlas", "origin": "canvas text rendering of invented names with system fonts", "source": "examples/gridlock-city/src/render/textures.ts (SignAtlas), names in src/city.ts", "author": "this project", "licence": "MIT" },
+    { "id": "gridlock-city-geometry", "kind": "buildings, roads, markings, props, pier, Ferris wheel, radio mast, lighthouse", "origin": "generated from the hand-designed layout in code", "source": "examples/gridlock-city/src/city.ts, src/render/cityMesh.ts, src/render/geo.ts", "author": "this project", "licence": "MIT" },
+    { "id": "gridlock-vehicles", "kind": "5 vehicle models (sports, sedan, taxi, police, van)", "origin": "extruded side profiles defined as coordinate lists", "source": "examples/gridlock-city/src/render/models.ts", "author": "this project", "licence": "MIT" },
+    { "id": "gridlock-people", "kind": "articulated low-poly humans with procedural animation", "origin": "box primitives, vertex colours", "source": "examples/gridlock-city/src/render/models.ts", "author": "this project", "licence": "MIT" },
+    { "id": "gridlock-sky-ocean", "kind": "sky dome, ocean, rain, particles", "origin": "GLSL shaders and particle code", "source": "examples/gridlock-city/src/render/atmosphere.ts, effects.ts", "author": "this project", "licence": "MIT" },
+    { "id": "fieldbook-art", "kind": "pixel-art sprites, tiles, 3x5 font", "origin": "string sprites and procedural noise in code", "source": "examples/fieldbook/art.ts, engines/raster2d/font.ts", "author": "this project", "licence": "MIT" },
+    { "id": "cellframe-ui", "kind": "spreadsheet shell UI", "origin": "original HTML/CSS/canvas; not derived from any commercial spreadsheet's assets", "source": "renderers/sheet-canvas/", "author": "this project", "licence": "MIT" }
+  ],
+  "third_party_code": [
+    { "name": "three", "version": "0.170.0", "use": "3D rendering, postprocessing (EffectComposer, UnrealBloomPass, OutputPass)", "licence": "MIT", "url": "https://github.com/mrdoob/three.js" },
+    { "name": "esbuild", "use": "build tool (dev only)", "licence": "MIT" },
+    { "name": "playwright", "use": "browser evals (dev only)", "licence": "Apache-2.0" },
+    { "name": "websockets, openpyxl, xlwings (optional), pywin32 (optional), pynput (optional)", "use": "Python bridge", "licence": "BSD-3-Clause / MIT / BSD-3-Clause / PSF / LGPL-3.0 (pynput, optional, not bundled)" }
+  ],
+  "names": "Meridian Bay, Coral Point, Neon Mile, The Meridian, Porter Logistics, BayGas, Velocity Motors, Gull Cab, Coral GT, Bayline, Porter van, Radio Meridian, Fieldbook and Cellframe were invented for this project."
+}

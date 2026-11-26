@@ -1,0 +1,14 @@
+import { StudioHost } from "../../../engines/core/host";
+import { bindKeyboard } from "../../../engines/core/input";
+import { GridlockCity } from "../src/game";
+const q = new URLSearchParams(location.search);
+const game = new GridlockCity({ bloom: q.get("bloom") !== "0", shadows: q.get("shadows") !== "0" });
+const host = new StudioHost(game, { width: 160, height: 90 });
+(window as any).host = host; (window as any).game = game;
+const mount = document.getElementById("view")!;
+await host.init(mount);
+if (q.get("t")) host.registry.edit("world.time", parseFloat(q.get("t")!));
+if (q.get("w")) host.registry.edit("world.weather", q.get("w")!);
+bindKeyboard(window, game.keyBindings, (e) => host.sendInput(e), () => true);
+host.start();
+(window as any).ready = true;

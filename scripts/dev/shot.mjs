@@ -1,0 +1,15 @@
+import { chromium } from "playwright";
+const [url, out, wait = "4000", w = "1280", h = "720"] = process.argv.slice(2);
+const browser = await chromium.launch({ executablePath: "/usr/bin/google-chrome", args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"] });
+const page = await browser.newPage({ viewport: { width: +w, height: +h } });
+const logs = [];
+page.on("console", (m) => logs.push(m.type() + ": " + m.text()));
+page.on("pageerror", (e) => logs.push("PAGEERROR " + e.message));
+await page.goto(url);
+await page.waitForFunction(() => window.ready === true, null, { timeout: 60000 }).catch(e => logs.push("ready timeout"));
+await page.waitForTimeout(+wait);
+await page.screenshot({ path: out });
+const fps = await page.evaluate(() => window.host ? JSON.stringify(window.host.telemetry()) : "");
+console.log(logs.slice(0, 15).join("\n"));
+console.log(fps);
+await browser.close();

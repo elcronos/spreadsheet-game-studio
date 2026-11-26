@@ -1,0 +1,33 @@
+// Draws the GAME tab from the in-memory test spreadsheet as a phone-width picture (for docs).
+import sharp from "sharp";
+import { execSync } from "node:child_process";
+import { execute, makeBook, tap } from "../../tests/gsheets/fake-gas";
+execSync("node scripts/build-gsheets-phone.mjs");
+const book = makeBook();
+execute(book, "setupGame");
+const COL: Record<string, number> = { left: 1, up: 15, down: 29, right: 43, use: 57, tool: 71, seed: 85 };
+for (const a of ["down", "right", "right", "right", "right", "down", "down", "down", "use", "tool", "tool", "use", "tool", "tool", "use"]) tap(book, "GAME", 4, COL[a]);
+const g = book.byName("GAME")!;
+const C = 5, HDR = 46, ROWH = [22, 22, 18, 34], LEFT = 0, Wpx = 80 * C;
+const top = ROWH.reduce((a, b) => a + b, 0);
+const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${Wpx}" height="${HDR + top + 45 * C + 60}" font-family="Roboto, Arial, sans-serif">`;
+svg += `<rect width="100%" height="100%" fill="#fff"/><rect width="100%" height="${HDR}" fill="#f8faf6"/><text x="12" y="29" font-size="15" font-weight="600" fill="#1f2328">Fieldbook</text><text x="${Wpx - 12}" y="29" font-size="12" text-anchor="end" fill="#5f6368">GAME · FARMER · FARM · …</text>`;
+let y = HDR;
+svg += `<rect x="0" y="${y}" width="${Wpx}" height="22" fill="#2e3b1f"/><text x="4" y="${y + 15}" font-size="9.5" fill="#fff">${esc(String(g.cell(1, 1).v))}</text>`;
+y += 22;
+svg += `<rect x="0" y="${y}" width="${Wpx}" height="22" fill="#f4f8f0"/><text x="4" y="${y + 15}" font-size="10.5" font-weight="700" fill="#33501a">${esc(String(g.cell(2, 1).v))}</text>`;
+y += 22;
+const labels = ["◀", "▲", "▼", "▶", "Use", "Tool", "Seed", "Wait", "Sleep", "New"];
+labels.forEach((l, i) => {
+  const x = i * 7 * C;
+  svg += `<rect x="${x}" y="${y}" width="${7 * C}" height="18" fill="#dcebd0" stroke="#c9d1c2" stroke-width="0.5"/><text x="${x + 3.5 * C}" y="${y + 13}" font-size="10" font-weight="700" text-anchor="middle" fill="#1f2328">${l}</text>`;
+  svg += `<rect x="${x}" y="${y + 18}" width="${7 * C}" height="34" fill="#f4f8f0" stroke="#c9d1c2" stroke-width="0.5"/><rect x="${x + 3.5 * C - 7}" y="${y + 28}" width="14" height="14" rx="2" fill="#fff" stroke="#5f6368" stroke-width="1.5"/>`;
+});
+svg += `<rect x="${70 * C}" y="${y}" width="${10 * C}" height="18" fill="#dcebd0"/><text x="${75 * C}" y="${y + 13}" font-size="10" font-weight="700" text-anchor="middle">Steps</text><text x="${75 * C}" y="${y + 40}" font-size="10" text-anchor="middle">x1 ▾</text>`;
+y += 52;
+for (let r = 0; r < 45; r++) for (let c = 0; c < 80; c++) svg += `<rect x="${c * C}" y="${y + r * C}" width="${C}" height="${C}" fill="${g.cell(5 + r, 1 + c).bg}" stroke="#e2e2e2" stroke-width="0.25"/>`;
+y += 45 * C;
+svg += `<text x="${Wpx / 2}" y="${y + 30}" font-size="11" text-anchor="middle" fill="#5f6368">GAME tab: 80 × 45 coloured cells · tap a box to play one move</text></svg>`;
+await sharp(Buffer.from(svg)).resize({ width: Wpx * 2 }).png().toFile("evals/screenshots/gsheets-phone-mock.png");
+console.log("evals/screenshots/gsheets-phone-mock.png");

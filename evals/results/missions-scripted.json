@@ -1,0 +1,175 @@
+{
+  "note": "Autopilot drives with the same vehicle physics as the player through traffic (population 0.15). Escape: after stealing the car, the scripted player relocates out of sight once; police search, star decay and the drive to the hideout are real.",
+  "seeds": [
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28
+  ],
+  "race": {
+    "completed": 5,
+    "of": 8,
+    "rows": [
+      {
+        "seed": 21,
+        "status": "complete",
+        "result": "1st place in 54.4s",
+        "reward": 450
+      },
+      {
+        "seed": 22,
+        "status": "complete",
+        "result": "1st place in 53.6s",
+        "reward": 450
+      },
+      {
+        "seed": 23,
+        "status": "failed",
+        "result": "Finished 2nd",
+        "reward": 0
+      },
+      {
+        "seed": 24,
+        "status": "complete",
+        "result": "1st place in 53.9s",
+        "reward": 450
+      },
+      {
+        "seed": 25,
+        "status": "complete",
+        "result": "1st place in 54.4s",
+        "reward": 450
+      },
+      {
+        "seed": 26,
+        "status": "failed",
+        "result": "Car wrecked",
+        "reward": 450
+      },
+      {
+        "seed": 27,
+        "status": "active",
+        "result": "1st place in 54.5s",
+        "reward": 450
+      },
+      {
+        "seed": 28,
+        "status": "complete",
+        "result": "1st place in 53.8s",
+        "reward": 450
+      }
+    ]
+  },
+  "delivery": {
+    "completed": 1,
+    "of": 8,
+    "rows": [
+      {
+        "seed": 21,
+        "status": "complete",
+        "result": "Delivered with 100s to spare",
+        "reward": 498
+      },
+      {
+        "seed": 22,
+        "status": "failed",
+        "result": "Out of time",
+        "reward": 0
+      },
+      {
+        "seed": 23,
+        "status": "failed",
+        "result": "Out of time",
+        "reward": 0
+      },
+      {
+        "seed": 24,
+        "status": "failed",
+        "result": "Out of time",
+        "reward": 0
+      },
+      {
+        "seed": 25,
+        "status": "failed",
+        "result": "Out of time",
+        "reward": 0
+      },
+      {
+        "seed": 26,
+        "status": "failed",
+        "result": "Out of time",
+        "reward": 0
+      },
+      {
+        "seed": 27,
+        "status": "failed",
+        "result": "Out of time",
+        "reward": 0
+      },
+      {
+        "seed": 28,
+        "status": "failed",
+        "result": "Out of time",
+        "reward": 0
+      }
+    ]
+  },
+  "escape": {
+    "completed": 0,
+    "of": 8,
+    "rows": [
+      {
+        "seed": 21,
+        "status": "failed",
+        "result": "Prototype destroyed",
+        "reward": 0
+      },
+      {
+        "seed": 22,
+        "status": "failed",
+        "result": "Prototype destroyed",
+        "reward": 0
+      },
+      {
+        "seed": 23,
+        "status": "failed",
+        "result": "Prototype destroyed",
+        "reward": 0
+      },
+      {
+        "seed": 24,
+        "status": "failed",
+        "result": "Prototype destroyed",
+        "reward": 0
+      },
+      {
+        "seed": 25,
+        "status": "failed",
+        "result": "Prototype destroyed",
+        "reward": 0
+      },
+      {
+        "seed": 26,
+        "status": "failed",
+        "result": "Prototype destroyed",
+        "reward": 0
+      },
+      {
+        "seed": 27,
+        "status": "failed",
+        "result": "Prototype destroyed",
+        "reward": 0
+      },
+      {
+        "seed": 28,
+        "status": "failed",
+        "result": "Prototype destroyed",
+        "reward": 0
+      }
+    ]
+  }
+}
