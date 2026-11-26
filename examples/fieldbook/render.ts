@@ -24,6 +24,16 @@ export interface RenderOptions {
   compact?: boolean;
   /** Fixed camera (top-left, world pixels) instead of following the farmer. */
   camera?: [number, number];
+  /**
+   * Asset export (Excel edition): draw only the world, no HUD, weather, lighting,
+   * particles or animation. With dynamic: false, crops, eggs, hens and the farmer are skipped too.
+   */
+  bare?: boolean;
+  dynamic?: boolean;
+  /** Draw only the static objects whose key ("tree:x,y", "fence:x,y", "prop:i") passes. */
+  objectFilter?: (key: string) => boolean;
+  /** Receives the key and sort baseline of every static object drawn. */
+  objectsOut?: { key: string; y: number }[];
 }
 
 // ---- ground cache -----------------------------------------------------------
@@ -245,10 +255,17 @@ export function renderScene(sim: FarmSim, s: Surface, o: RenderOptions = {}): vo
   s.clear(canopy(season)[1]);
   s.setOrigin(camX, camY);
   s.drawSurface(ground(sim, season), 0, 0);
+  const VW = o.bare ? s.width : LOGICAL_W, VH = o.bare ? s.height : LOGICAL_H;
+  const keep = (key: string, y: number) => {
+    if (o.objectFilter && !o.objectFilter(key)) return false;
+    o.objectsOut?.push({ key, y });
+    return true;
+  };
+  const dynamic = o.dynamic ?? true;
 
   // water shimmer
   sim.map.tiles.forEachVisible(camX, camY, LOGICAL_W, LOGICAL_H, (tx, ty, id) => {
-    if (id !== T.WATER || winter) return;
+    if (id !== T.WATER || winter || o.bare) return;
     const slot = Math.floor(t * 1.5 + hash2(tx, ty, 60) * 10);
     for (let i = 0; i < 2; i++) {
       const hx = hash2(tx * 7 + i, slot, 61), hy = hash2(ty * 5 + i, slot, 62);
@@ -264,14 +281,15 @@ export function renderScene(sim: FarmSim, s: Surface, o: RenderOptions = {}): vo
 
   // ---- y-sorted world objects ----
   const draws: { y: number; f: () => void }[] = [];
-  const view = { x0: camX - 16, y0: camY - 8, x1: camX + LOGICAL_W + 16, y1: camY + LOGICAL_H + 24 };
+  const view = { x0: camX - 16, y0: camY - 8, x1: camX + VW + 16, y1: camY + VH + 24 };
   const visible = (x: number, y: number) => x >= view.x0 && x <= view.x1 && y >= view.y0 && y <= view.y1;
   const lit = hour >= 18.5 || hour < 6.5 ? 1 : 0;
   const lights: Light[] = [];
 
-  sim.map.tiles.forEachVisible(camX, camY - 16, LOGICAL_W, LOGICAL_H + 32, (tx, ty, id) => {
+  sim.map.tiles.forEachVisible(camX, camY - 16, VW, VH + 32, (tx, ty, id) => {
     const bx = tx * TILE, by = ty * TILE;
     if (id === T.TREE) {
+      if (!keep(`tree:${tx},${ty}`, by + 8)) return;
       const v = Math.floor(hash2(tx, ty, 70) * 4);
       const jx = Math.floor(hash2(tx, ty, 71) * 3) - 1;
       const sp = treeSprite(season, v);
@@ -289,6 +307,7 @@ export function renderScene(sim: FarmSim, s: Surface, o: RenderOptions = {}): vo
         },
       });
     } else if (id === T.FENCE) {
+      if (!keep(`fence:${tx},${ty}`, by + 7)) return;
       const mask = sim.map.tiles.neighbourMask(tx, ty, (n) => n === T.FENCE);
       draws.push({ y: by + 7, f: () => drawFence(s, bx, by, mask, season) });
     }
@@ -349,16 +368,16 @@ export function renderScene(sim: FarmSim, s: Surface, o: RenderOptions = {}): vo
         f = () => drawStump(s, bx, by);
         break;
       case "flowers":
-        draws.push({ y: by + 2, f: () => drawFlowers(s, bx, by, season, i) });
+        if (keep(`prop:${i}`, by + 2)) draws.push({ y: by + 2, f: () => drawFlowers(s, bx, by, season, i) });
         return;
       case "mat":
         return;
     }
-    if (f !== null) draws.push({ y: bottom, f });
+    if (f !== null && keep(`prop:${i}`, bottom)) draws.push({ y: bottom, f });
   });
 
   // crops
-  for (let py = 0; py < FIELD_RECT.h; py++)
+  for (let py = 0; py < (dynamic ? FIELD_RECT.h : 0); py++)
     for (let px = 0; px < FIELD_RECT.w; px++) {
       const tx = FIELD_RECT.x + px, ty = FIELD_RECT.y + py;
       const p = sim.plot(tx, ty)!;
@@ -391,9 +410,9 @@ export function renderScene(sim: FarmSim, s: Surface, o: RenderOptions = {}): vo
       });
     }
 
-  for (const [tx, ty] of sim.eggs) draws.push({ y: ty * TILE + 6, f: () => s.blit(EGG, tx * TILE + 2, ty * TILE + 3) });
+  if (dynamic) for (const [tx, ty] of sim.eggs) draws.push({ y: ty * TILE + 6, f: () => s.blit(EGG, tx * TILE + 2, ty * TILE + 3) });
 
-  for (const c of sim.chickens) {
+  for (const c of dynamic ? sim.chickens : []) {
     const set = c.flip ? CHICKEN_L : CHICKEN;
     const moving = !c.pecking && Math.hypot(c.tx - c.x, c.ty - c.y) > 0.5;
     const sp = c.pecking ? (Math.floor(c.anim * 4) % 2 ? set.peck : set.a) : moving && Math.floor(c.anim * 6) % 2 ? set.b : set.a;
@@ -412,7 +431,7 @@ export function renderScene(sim: FarmSim, s: Surface, o: RenderOptions = {}): vo
   const wi = Math.floor(f.walkT * 8) % 4;
   const fsp = f.moving ? frames.walk[wi] : frames.stand;
   const bob = f.moving && (wi === 1 || wi === 3) ? -1 : 0;
-  draws.push({
+  if (dynamic) draws.push({
     y: f.y,
     f: () => {
       shadowEllipse(s, f.x, f.y - 0.5, 4, 1.4, 0.32);
@@ -430,6 +449,7 @@ export function renderScene(sim: FarmSim, s: Surface, o: RenderOptions = {}): vo
 
   draws.sort((a, b) => a.y - b.y);
   for (const d of draws) d.f();
+  if (o.bare) return;
 
   // target cursor
   if (sim.hint.startsWith("E ") && sim.fade <= 0) {

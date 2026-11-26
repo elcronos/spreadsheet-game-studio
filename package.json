@@ -19,7 +19,9 @@
     "build:gsheets-phone": "node scripts/build-gsheets-phone.mjs",
     "gsheets:port": "node scripts/gsheets-port.mjs",
     "record:highlights": "node scripts/record-highlights.mjs",
-    "test:quayside": "node --import tsx --test tests/quayside/*.test.ts"
+    "test:quayside": "node --import tsx --test tests/quayside/*.test.ts",
+    "build:excel": "npx tsx scripts/excel/export-fieldbook-assets.ts && python3 scripts/excel/build_fieldbook_xlsx.py",
+    "test:excel-fieldbook": "python3 tests/excel/fieldbook_lo_test.py"
   },
   "keywords": [],
   "author": "",

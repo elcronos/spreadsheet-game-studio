@@ -1,0 +1,2 @@
+# VBA modules keep Windows line endings (the VBA editor import needs them)
+downloads/*.bas -text

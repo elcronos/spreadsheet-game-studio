@@ -12,6 +12,14 @@ agent skills: one for building spreadsheet games, one for porting them to Google
 | ![Gridlock City at night](evals/screenshots/night-neon.png) | ![Fieldbook farm](examples/fieldbook/screenshots/day.png) | ![Fieldbook in Google Sheets](docs/media/gsheets-2.png) |
 | Open world driving in an original coastal city, in the spirit of early 2000s classics | A farming and market sim whose prices are spreadsheet formulas | The whole game runs in the sheet's own script. Tap a box, play a move. Works on phones |
 
+### New: Fieldbook runs inside Excel, in real time
+
+**Download [`Fieldbook.xlsx`](downloads/Fieldbook.xlsx) and [`Fieldbook.bas`](downloads/Fieldbook.bas)**,
+import the macro once (Alt+F11, File > Import File, save as .xlsm), press Play. The FIELDBOOK
+sheet is the screen: 256 x 184 cells, one cell per pixel, repainted live as you farm. Prices
+are real formulas on the RULES sheet, and every variable is a cell you can edit.
+See [examples/fieldbook/excel](examples/fieldbook/excel/README.md).
+
 ### New: Quayside, the real Elizabeth Quay in Perth
 
 ![Quayside: the stolen ferry on Perth Water](examples/quayside/screenshots/heist.png)
@@ -37,7 +45,7 @@ bloom and night lights. See [examples/quayside](examples/quayside/README.md).
 |---|---|---|
 | Browser | A spreadsheet style app: the GAME sheet is the picture, other sheets are the game's variables and rules | Built, tested |
 | LibreOffice Calc | A local bridge streams frames into real worksheet cells and syncs edits back | Measured |
-| Microsoft Excel | Same bridge (COM or xlwings) | Written and unit tested; **not yet run on real Excel** |
+| Microsoft Excel | **Fieldbook: self-contained real-time workbook** (one VBA module, no other software). Gridlock City: the bridge (COM or xlwings) | Fieldbook tested in LibreOffice's VBA mode; neither yet run on real Excel |
 | Google Sheets | Turn edition (phones too) and real time sidebar edition | Measured on a real sheet |
 
 * **Live tuning.** Every tunable is a cell. Change a car's top speed, the weather or a
@@ -142,6 +150,7 @@ node scripts/new-game.mjs my-game "My Game"
 npm test               # core, Fieldbook, Excel bridge (TS side), template
 npm run test:gameplay  # Gridlock City scripted gameplay (headless)
 npm run test:quayside  # Quayside: map, ferries, heist, traffic (headless)
+npm run test:excel-fieldbook  # Fieldbook's VBA game, played in headless LibreOffice
 npm run test:bridge    # bridge: Python tests + Calc via UNO
 npm run test:gsheets   # Google Sheets editions against an in-memory Apps Script
 npm run eval:browser   # authenticity, edits, performance, screenshots (needs a server on :8091)
