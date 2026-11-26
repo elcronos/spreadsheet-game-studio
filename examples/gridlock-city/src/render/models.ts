@@ -55,6 +55,131 @@ function extrude(profile: [number, number][], width: number, bevel = 0.06): THRE
   return g.toNonIndexed();
 }
 
+/**
+ * Smooth variant: a lofted body. Each station along the car is a superellipse cross-section
+ * sized from the side profile, with rounded corners in plan, tumblehome above the waist,
+ * wheel arches cut into the sills and the glasshouse as a second material group.
+ */
+export function loftBody(k: VehicleKind): THREE.BufferGeometry {
+  const prof = PROFILES[k].body, gl = PROFILES[k].glass, d = DIMS[k];
+  const floor = prof[0][1];
+  const top = prof.slice(1, -1).slice().sort((p, q) => p[0] - q[0]);
+  const zMin = Math.min(...prof.map((p) => p[0])), zMax = Math.max(...prof.map((p) => p[0]));
+  const lerpY = (pts: [number, number][], z: number) => {
+    if (z <= pts[0][0]) return pts[0][1];
+    for (let i = 1; i < pts.length; i++)
+      if (z <= pts[i][0]) {
+        const t = (z - pts[i - 1][0]) / Math.max(1e-6, pts[i][0] - pts[i - 1][0]);
+        return pts[i - 1][1] + (pts[i][1] - pts[i - 1][1]) * t;
+      }
+    return pts[pts.length - 1][1];
+  };
+  // smooth the roof line a little so the pillars flow
+  const roof = (z: number) => (lerpY(top, z - 0.12) + 2 * lerpY(top, z) + lerpY(top, z + 0.12)) / 4;
+  const gz0 = gl[0][0], gz1 = gl[gl.length - 1][0];
+  const belt = (z: number) => {
+    const t = THREE.MathUtils.clamp((z - gz0) / (gz1 - gz0), 0, 1);
+    return gl[0][1] + (gl[gl.length - 1][1] - gl[0][1]) * t + 0.01;
+  };
+  const wb = d.wheelbase / 2;
+  const W = d.width / 2;
+  // one half of the cross-section, bottom centre to top centre; mirrored for the other side
+  const half = (hw: number, fl: number, rt: number, bz: number, steep: boolean, cabin: boolean): { x: number; y: number; g: boolean }[] => {
+    const out: { x: number; y: number; g: boolean }[] = [];
+    const P = (x: number, y: number, g = false) => out.push({ x, y, g });
+    const waist = Math.min(bz, rt);
+    const gh = rt - waist; // glasshouse height at this station
+    const k = THREE.MathUtils.clamp(gh / 0.3, 0, 1);
+    const gw = THREE.MathUtils.lerp(hw - 0.05, hw * 0.74, k);
+    const r = Math.min(0.11, Math.max(0.03, gh * 0.4 + 0.04));
+    const sb = Math.max(fl + 0.16, waist - 0.09);
+    P(0, fl); P(hw * 0.55, fl); P(hw - 0.12, fl); P(hw - 0.035, fl + 0.035); P(hw, fl + 0.12);
+    for (let i = 1; i <= 3; i++) P(hw + 0.015 * Math.sin((i / 4) * Math.PI), fl + 0.12 + ((sb - fl - 0.12) * i) / 4);
+    P(hw, sb); P(hw - 0.015, waist - 0.03); P(hw - 0.05, waist);
+    const gl = cabin && gh > 0.15;
+    for (let i = 1; i <= 3; i++) {
+      const t = i / 4;
+      P(THREE.MathUtils.lerp(hw - 0.05, gw, t), THREE.MathUtils.lerp(waist, rt - r, t), gl);
+    }
+    P(gw, rt - r, gl);
+    P(gw - r * 0.3, rt - r * 0.3, gl && steep); P(gw - r, rt, gl && steep);
+    P((gw - r) * 0.5, rt, gl && steep); P(0, rt, gl && steep);
+    // the side window frame: keep the first glass row painted so there is a visible waist line
+    return out;
+  };
+  const NS = 72;
+  const rings: { x: number; y: number; z: number; g: boolean }[][] = [];
+  for (let i = 0; i <= NS; i++) {
+    const u = i / NS;
+    const z = zMin + (zMax - zMin) * (0.5 - 0.5 * Math.cos(Math.PI * u));
+    const e = Math.min(z - zMin, zMax - z);
+    const plan = 0.6 + 0.4 * Math.sqrt(Math.max(0, 1 - Math.pow(Math.max(0, 1 - e / 0.8), 2)));
+    let fl = floor;
+    for (const az of [wb, -wb]) {
+      const q = Math.abs(z - az) / 0.5;
+      if (q < 1) fl = Math.max(fl, floor + 0.36 * Math.sqrt(1 - q * q));
+    }
+    const rt = Math.max(fl + 0.2, roof(z));
+    const slope = Math.abs(roof(z + 0.08) - roof(z - 0.08)) / 0.16;
+    const inCabin = z > gz0 - 0.05 && z < gz1 + 0.05;
+    const h = half(W * plan, fl, rt, belt(z), slope > 0.35, inCabin);
+    const ring: { x: number; y: number; z: number; g: boolean }[] = [];
+    for (const q of h) ring.push({ x: q.x, y: q.y, z, g: q.g });
+    for (let j = h.length - 2; j >= 1; j--) ring.push({ x: -h[j].x, y: h[j].y, z, g: h[j].g });
+    rings.push(ring);
+  }
+  const NA = rings[0].length;
+  const pos: number[] = [], isGlass: boolean[] = [];
+  for (const ring of rings) for (const q of ring) { pos.push(q.x, q.y, q.z); isGlass.push(q.g); }
+  const body: number[] = [], glass: number[] = [];
+  const id = (i: number, j: number) => i * NA + (j % NA);
+  for (let i = 0; i < NS; i++)
+    for (let j = 0; j < NA; j++) {
+      const a = id(i, j), b = id(i + 1, j), c = id(i + 1, j + 1), dd = id(i, j + 1);
+      const g = isGlass[a] && isGlass[b] && isGlass[c] && isGlass[dd];
+      (g ? glass : body).push(a, b, c, a, c, dd);
+    }
+  // caps at nose and tail
+  const capC = (i: number) => {
+    let cx = 0, cy = 0, cz = 0;
+    for (let j = 0; j < NA; j++) {
+      cx += pos[id(i, j) * 3]; cy += pos[id(i, j) * 3 + 1]; cz += pos[id(i, j) * 3 + 2];
+    }
+    pos.push(cx / NA, cy / NA, cz / NA);
+    return pos.length / 3 - 1;
+  };
+  const c0 = capC(0), c1 = capC(NS);
+  for (let j = 0; j < NA; j++) {
+    body.push(c0, id(0, j + 1), id(0, j));
+    body.push(c1, id(NS, j), id(NS, j + 1));
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+  g.setIndex([...body, ...glass]);
+  g.addGroup(0, body.length, 0);
+  g.addGroup(body.length, glass.length, 1);
+  // winding: make sure normals point out (sample a side vertex)
+  g.computeVertexNormals();
+  const n = g.getAttribute("normal") as THREE.BufferAttribute;
+  const probe = id(NS >> 1, 6);
+  if (n.getX(probe) * pos[probe * 3] < 0) {
+    const idx = g.getIndex()!.array as Uint32Array | Uint16Array;
+    for (let i = 0; i < idx.length; i += 3) {
+      const t = idx[i + 1];
+      idx[i + 1] = idx[i + 2];
+      idx[i + 2] = t;
+    }
+    g.computeVertexNormals();
+  }
+  return g;
+}
+
+let vehicleStyle: "block" | "smooth" = "block";
+/** "block" (Gridlock City) or "smooth" (splined, bevelled bodies; used by Quayside). */
+export function setVehicleStyle(s: "block" | "smooth"): void {
+  vehicleStyle = s;
+}
+
 export interface VehicleRig {
   root: THREE.Group;
   body: THREE.Group; // pitch/roll applied here
@@ -89,12 +214,27 @@ const shared = {
 };
 
 function paint(colour: number): THREE.MeshStandardMaterial {
-  let m = shared.paint.get(colour);
+  const key = vehicleStyle === "smooth" ? -1 - colour : colour;
+  let m = shared.paint.get(key);
   if (!m) {
-    m = new THREE.MeshStandardMaterial({ color: colour, metalness: 0.35, roughness: 0.32, flatShading: true, vertexColors: true });
-    shared.paint.set(colour, m);
+    m = vehicleStyle === "smooth"
+      ? new THREE.MeshPhysicalMaterial({ color: colour, metalness: 0.5, roughness: 0.28, clearcoat: 1, clearcoatRoughness: 0.08, vertexColors: true })
+      : new THREE.MeshStandardMaterial({ color: colour, metalness: 0.35, roughness: 0.32, flatShading: true, vertexColors: true });
+    shared.paint.set(key, m);
   }
   return m;
+}
+
+function smoothShapes(k: VehicleKind): { body: THREE.BufferGeometry; glass: THREE.BufferGeometry | null } {
+  const key = `smooth:${k}` as VehicleKind;
+  let body = shared.bodyGeo.get(key);
+  if (!body) {
+    body = loftBody(k);
+    const n = body.getAttribute("position").count;
+    body.setAttribute("color", new THREE.Float32BufferAttribute(new Float32Array(n * 3).fill(1), 3));
+    shared.bodyGeo.set(key, body);
+  }
+  return { body, glass: null };
 }
 
 function initShared(): void {
@@ -121,6 +261,44 @@ function initShared(): void {
   shared.blue = new THREE.MeshBasicMaterial({ color: 0x1a5cff, toneMapped: false });
 }
 
+let sGlass: THREE.MeshPhysicalMaterial | null = null;
+function smoothGlass(): THREE.MeshPhysicalMaterial {
+  return (sGlass ??= new THREE.MeshPhysicalMaterial({ color: 0x020406, metalness: 0.0, roughness: 0.06, envMapIntensity: 0.55, specularIntensity: 0.6 }));
+}
+let sWheel: { tyre: THREE.BufferGeometry; rim: THREE.BufferGeometry } | null = null;
+function smoothWheel(): { tyre: THREE.BufferGeometry; rim: THREE.BufferGeometry } {
+  if (!sWheel) {
+    // tyre: a fat torus; rim: a dished disc with five spokes
+    const tyre = new THREE.TorusGeometry(0.26, 0.1, 10, 28).rotateY(Math.PI / 2);
+    tyre.scale(1.3, 1, 1);
+    const disc = new THREE.CylinderGeometry(0.22, 0.22, 0.2, 24).rotateZ(Math.PI / 2);
+    const parts: THREE.BufferGeometry[] = [disc];
+    for (let i = 0; i < 5; i++) {
+      const sp = new THREE.BoxGeometry(0.04, 0.2, 0.06).translate(0.11, 0.1, 0).rotateX((i / 5) * Math.PI * 2);
+      parts.push(sp);
+    }
+    const rim = mergeSimple(parts);
+    sWheel = { tyre, rim };
+  }
+  return sWheel;
+}
+function mergeSimple(parts: THREE.BufferGeometry[]): THREE.BufferGeometry {
+  const flat = parts.map((p) => (p.index ? p.toNonIndexed() : p));
+  let n = 0;
+  for (const p of flat) n += p.getAttribute("position").count;
+  const pos = new Float32Array(n * 3), nor = new Float32Array(n * 3);
+  let o = 0;
+  for (const p of flat) {
+    pos.set(p.getAttribute("position").array as Float32Array, o * 3);
+    nor.set(p.getAttribute("normal").array as Float32Array, o * 3);
+    o += p.getAttribute("position").count;
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  g.setAttribute("normal", new THREE.BufferAttribute(nor, 3));
+  return g;
+}
+
 function decalMat(kind: "taxi" | "police"): THREE.MeshStandardMaterial {
   let m = shared.decal.get(kind);
   if (!m) {
@@ -136,32 +314,33 @@ export function buildVehicle(v: Vehicle): VehicleRig {
   const root = new THREE.Group();
   const body = new THREE.Group();
   root.add(body);
-  const geo = shared.bodyGeo.get(v.kind)!.clone();
-  const bodyMesh = new THREE.Mesh(geo, paint(v.colour));
+  const smooth = vehicleStyle === "smooth";
+  const shapes = smooth ? smoothShapes(v.kind) : { body: shared.bodyGeo.get(v.kind)!, glass: shared.glassGeo.get(v.kind)! };
+  const geo = shapes.body.clone();
+  const bodyMesh = new THREE.Mesh(geo, smooth ? [paint(v.colour), smoothGlass()] : paint(v.colour));
   bodyMesh.castShadow = true;
   body.add(bodyMesh);
-  const glass = new THREE.Mesh(shared.glassGeo.get(v.kind)!, shared.glass!);
-  body.add(glass);
+  if (shapes.glass) body.add(new THREE.Mesh(shapes.glass, shared.glass!));
   // bumpers & sills
   const L = d.length, W = d.width;
-  const bump = new THREE.Mesh(new THREE.BoxGeometry(W + 0.04, 0.22, 0.22), shared.trim!);
-  bump.position.set(0, 0.36, L / 2 - 0.08);
+  const bump = new THREE.Mesh(smooth ? new THREE.CapsuleGeometry(0.07, W * 0.5, 4, 10).rotateZ(Math.PI / 2) : new THREE.BoxGeometry(W + 0.04, 0.22, 0.22), shared.trim!);
+  bump.position.set(0, smooth ? 0.4 : 0.36, L / 2 - (smooth ? 0.1 : 0.08));
   body.add(bump);
   const bump2 = bump.clone();
-  bump2.position.z = -L / 2 + 0.08;
+  bump2.position.z = -L / 2 + (smooth ? 0.1 : 0.08);
   body.add(bump2);
-  const sill = new THREE.Mesh(new THREE.BoxGeometry(W + 0.02, 0.12, L * 0.6), shared.trim!);
+  const sill = new THREE.Mesh(new THREE.BoxGeometry(smooth ? W - 0.12 : W + 0.02, 0.12, L * 0.6), shared.trim!);
   sill.position.set(0, 0.34, 0);
-  body.add(sill);
+  if (!smooth) body.add(sill);
   // lights
   const headMat = new THREE.MeshStandardMaterial({ color: 0xfff6e0, emissive: 0xfff1cc, emissiveIntensity: 0.2 });
   const tailMat = new THREE.MeshStandardMaterial({ color: 0x8a0f12, emissive: 0xff1a1a, emissiveIntensity: 0.15 });
   const hy = v.kind === "van" ? 0.95 : v.kind === "sports" ? 0.62 : 0.72;
-  const head = new THREE.Mesh(new THREE.BoxGeometry(W * 0.86, 0.13, 0.06), headMat);
-  head.position.set(0, hy, L / 2 + 0.02);
+  const head = new THREE.Mesh(smooth ? new THREE.CapsuleGeometry(0.05, W * 0.5, 3, 8).rotateZ(Math.PI / 2) : new THREE.BoxGeometry(W * 0.86, 0.13, 0.06), headMat);
+  head.position.set(0, hy, L / 2 + (smooth ? -0.1 : 0.02));
   body.add(head);
-  const tail = new THREE.Mesh(new THREE.BoxGeometry(W * 0.9, 0.2, 0.06), tailMat);
-  tail.position.set(0, hy + (v.kind === "van" ? 0.3 : 0.05), -L / 2 - 0.02);
+  const tail = new THREE.Mesh(smooth ? new THREE.CapsuleGeometry(0.055, W * 0.52, 3, 8).rotateZ(Math.PI / 2) : new THREE.BoxGeometry(W * 0.9, 0.2, 0.06), tailMat);
+  tail.position.set(0, hy + (v.kind === "van" ? 0.3 : 0.05), -L / 2 + (smooth ? 0.08 : -0.02));
   body.add(tail);
   // kind-specific details
   let bar: VehicleRig["bar"];
@@ -197,7 +376,7 @@ export function buildVehicle(v: Vehicle): VehicleRig {
     }
   }
   if (v.kind === "sports") {
-    const wing = new THREE.Mesh(new THREE.BoxGeometry(W * 0.95, 0.05, 0.32), shared.trim!);
+    const wing = new THREE.Mesh(new THREE.BoxGeometry(W * (smooth ? 0.7 : 0.95), 0.05, 0.32), shared.trim!);
     wing.position.set(0, 0.98, -L / 2 + 0.25);
     body.add(wing);
   }
@@ -208,12 +387,12 @@ export function buildVehicle(v: Vehicle): VehicleRig {
   }
   // wheels
   const wheels: THREE.Object3D[] = [];
-  const wb = d.wheelbase / 2, tw = W / 2 + 0.02;
+  const wb = d.wheelbase / 2, tw = smooth ? W / 2 - 0.13 : W / 2 + 0.02;
   for (const [x, z] of [[tw, wb], [-tw, wb], [tw, -wb], [-tw, -wb]]) {
     const pivot = new THREE.Group();
     pivot.position.set(x, 0.34, z);
-    const tyre = new THREE.Mesh(shared.wheelGeo!, shared.tyre!);
-    const rim = new THREE.Mesh(shared.rimGeo!, shared.rim!);
+    const tyre = new THREE.Mesh(smooth ? smoothWheel().tyre : shared.wheelGeo!, shared.tyre!);
+    const rim = new THREE.Mesh(smooth ? smoothWheel().rim : shared.rimGeo!, shared.rim!);
     const spin = new THREE.Group();
     spin.add(tyre, rim);
     pivot.add(spin);
@@ -311,10 +490,37 @@ function merge(parts: THREE.BufferGeometry[]): THREE.BufferGeometry {
   return g;
 }
 
-const box = (w: number, h: number, d: number, x = 0, y = 0, z = 0) => new THREE.BoxGeometry(w, h, d).translate(x, y, z);
+/** "block" (Gridlock City) or "smooth" (rounded capsules, smooth shading; used by Quayside). */
+let humanStyle: "block" | "smooth" = "block";
+let smoothMat: THREE.MeshStandardMaterial | null = null;
+export function setHumanStyle(s: "block" | "smooth"): void {
+  humanStyle = s;
+}
+const box = (w: number, h: number, d: number, x = 0, y = 0, z = 0): THREE.BufferGeometry => {
+  if (humanStyle === "block") return new THREE.BoxGeometry(w, h, d).translate(x, y, z);
+  // a little fuller than the blocks, and long enough to overlap at the joints
+  const W2 = w * 1.18, D2 = d * 1.18;
+  const r = Math.min(W2, D2) / 2;
+  if (h <= 2 * r + 0.01) {
+    // small rounded part (head, hands, shoes): a squashed sphere
+    return new THREE.SphereGeometry(0.5, 16, 12).scale(W2, h * 1.12, D2).translate(x, y, z);
+  }
+  return new THREE.CapsuleGeometry(r, Math.max(0.01, h - 2 * r + r * 1.2), 6, 16).scale(W2 / (2 * r), 1, D2 / (2 * r)).translate(x, y, z);
+};
 
 export function buildHuman(look: Look, isPlayer = false): HumanRig {
   if (!humanMat) humanMat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.75, flatShading: true });
+  if (!smoothMat) smoothMat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.62, flatShading: false });
+  const savedMat = humanMat;
+  if (humanStyle === "smooth") humanMat = smoothMat;
+  try {
+    return buildHumanWith(look, isPlayer);
+  } finally {
+    humanMat = savedMat;
+  }
+}
+
+function buildHumanWith(look: Look, isPlayer: boolean): HumanRig {
   const s = look.height / 1.8;
   const b = look.build;
   const root = new THREE.Group();
@@ -336,7 +542,7 @@ export function buildHuman(look: Look, isPlayer = false): HumanRig {
     torsoParts.push(coloured(box(0.2, 0.05, 0.03, 0, 0.78 * s, 0.13), 0x111111)); // shades
     torsoParts.push(coloured(box(0.44 * b, 0.06, 0.25, 0, 0.12 * s, 0), 0x6d4c41)); // belt
   }
-  const torsoMesh = new THREE.Mesh(merge(torsoParts), humanMat);
+  const torsoMesh = new THREE.Mesh(merge(torsoParts), humanMat!);
   torsoMesh.castShadow = true;
   torso.add(torsoMesh);
   const limb = (parent: THREE.Object3D, x: number, y: number, parts: THREE.BufferGeometry[]) => {
@@ -361,8 +567,8 @@ export function buildHuman(look: Look, isPlayer = false): HumanRig {
   let umbrella: THREE.Group | undefined;
   if (look.umbrella !== undefined && !isPlayer) {
     umbrella = new THREE.Group();
-    const canopy = new THREE.Mesh(coloured(new THREE.ConeGeometry(0.62, 0.32, 8).translate(0, 0.62, 0), look.umbrella), humanMat);
-    const pole = new THREE.Mesh(coloured(new THREE.CylinderGeometry(0.015, 0.015, 0.8, 4).translate(0, 0.25, 0), 0x333333), humanMat);
+    const canopy = new THREE.Mesh(coloured(new THREE.ConeGeometry(0.62, 0.32, 8).translate(0, 0.62, 0), look.umbrella), humanMat!);
+    const pole = new THREE.Mesh(coloured(new THREE.CylinderGeometry(0.015, 0.015, 0.8, 4).translate(0, 0.25, 0), 0x333333), humanMat!);
     umbrella.add(canopy, pole);
     umbrella.position.set(0, -al * 0.9, 0.05);
     foreR.add(umbrella);

@@ -2,6 +2,7 @@
  * Browser entry: opens a workbook (game) in the Cellframe shell.
  *   #gridlock (default)  Gridlock City - 3D open-world driving
  *   #fieldbook           Fieldbook - 2D farming & market sim
+ *   #quayside            Quayside - open world at the real Elizabeth Quay, Perth
  * Query options: ?res=320x180  ?mode=3d|sheet|grid|editor  ?bloom=0  ?shadows=0  ?bridge=ws://…  ?autostart=1
  */
 import { StudioHost } from "../../engines/core/host";
@@ -10,18 +11,21 @@ import { SheetApp, Mode } from "../../renderers/sheet-canvas/shell";
 import { bridgeUrlFromLocation } from "../../renderers/excel/ExcelBridgeBackend";
 import { GridlockCity } from "../gridlock-city/src/game";
 import { createFieldbook } from "../fieldbook/game";
+import { QuaysideGame } from "../quayside/src/game";
 
 const GAMES = [
   { id: "gridlock-city", label: "Gridlock City.cfx", hash: "gridlock" },
   { id: "fieldbook", label: "Fieldbook.cfx", hash: "fieldbook" },
+  { id: "quayside", label: "Quayside (Perth).cfx", hash: "quayside" },
 ];
 
 async function boot(): Promise<void> {
   const q = new URLSearchParams(location.search);
-  const which = location.hash.replace("#", "") === "fieldbook" ? "fieldbook" : "gridlock";
+  const h = location.hash.replace("#", "");
+  const which = h === "fieldbook" ? "fieldbook" : h === "quayside" ? "quayside" : "gridlock";
   const coarse = matchMedia("(pointer: coarse)").matches;
   const game: SpreadsheetGame =
-    which === "fieldbook" ? createFieldbook() : new GridlockCity({ bloom: q.get("bloom") !== "0", shadows: q.get("shadows") !== "0" && !coarse, pixelRatio: coarse ? 1 : Math.min(devicePixelRatio || 1, 1.5) });
+    which === "fieldbook" ? createFieldbook() : which === "quayside" ? new QuaysideGame({ shadows: q.get("shadows") !== "0" && !coarse, bloom: q.get("bloom") !== "0", ao: q.get("ao") === "1", pixelRatio: coarse ? 1 : Math.min(devicePixelRatio || 1, 1.5) }) : new GridlockCity({ bloom: q.get("bloom") !== "0", shadows: q.get("shadows") !== "0" && !coarse, pixelRatio: coarse ? 1 : Math.min(devicePixelRatio || 1, 1.5) });
   const [rw, rh] = (q.get("res") ?? "160x90").split("x").map(Number);
   const host = new StudioHost(game, { width: rw, height: rh, quantize: { mode: which === "fieldbook" ? "fixed256" : "adaptive" } });
   const view = document.createElement("div");

@@ -11,14 +11,15 @@
     "serve": "node scripts/serve.mjs",
     "test:gameplay": "node --import tsx --test tests/gridlock/*.test.ts",
     "test:bridge": "bash scripts/excel/run_tests.sh",
-    "test:all": "npm test && npm run test:gameplay && npm run test:bridge",
+    "test:all": "npm test && npm run test:gameplay && npm run test:quayside && npm run test:bridge",
     "eval:browser": "node evals/browser-evals.mjs",
     "eval:missions": "node --import tsx scripts/eval-missions.ts",
     "build:gsheets": "node scripts/build-gsheets.mjs",
     "test:gsheets": "node --import tsx --test tests/gsheets/gsheets.test.ts tests/gsheets/phone.test.ts tests/gsheets/port.test.ts && node --import tsx tests/gsheets/e2e.mjs",
     "build:gsheets-phone": "node scripts/build-gsheets-phone.mjs",
     "gsheets:port": "node scripts/gsheets-port.mjs",
-    "record:highlights": "node scripts/record-highlights.mjs"
+    "record:highlights": "node scripts/record-highlights.mjs",
+    "test:quayside": "node --import tsx --test tests/quayside/*.test.ts"
   },
   "keywords": [],
   "author": "",

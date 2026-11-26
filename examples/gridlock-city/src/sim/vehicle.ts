@@ -143,7 +143,15 @@ export const RAMPS: Ramp[] = [
   { x0: 70, x1: 82, z0: 125, z1: 133, dir: 1, height: 1.6 }, // parking lot ramp
 ];
 
+/** Ground height at (x, z). Another game can swap in its own terrain with setGroundHeight. */
 export function groundHeight(x: number, z: number): number {
+  return groundFn(x, z);
+}
+let groundFn = rampHeight;
+export function setGroundHeight(fn: ((x: number, z: number) => number) | null): void {
+  groundFn = fn ?? rampHeight;
+}
+function rampHeight(x: number, z: number): number {
   for (const r of RAMPS) {
     if (x < r.x0 || x > r.x1 || z < r.z0 || z > r.z1) continue;
     const u = r.dir === 1 ? (x - r.x0) / (r.x1 - r.x0) : r.dir === 3 ? (r.x1 - x) / (r.x1 - r.x0) : r.dir === 2 ? (z - r.z0) / (r.z1 - r.z0) : (r.z1 - z) / (r.z1 - r.z0);

@@ -1,20 +1,126 @@
 {
-  "policy": "No external image, model, audio or font files are shipped. All game assets are generated at runtime by code in this repository.",
+  "policy": "No external image, model, audio or font files are shipped. All game art is generated at runtime by code in this repository. The one external input is map data: Quayside's streets, buildings, river and landmarks are derived from OpenStreetMap (ODbL), listed below.",
   "assets": [
-    { "id": "gridlock-textures", "kind": "textures (asphalt, pavement, promenade, sand, grass, wood, roof, concrete, facade atlases, awning stripes, palm frond, glow, clouds, car decals)", "origin": "procedurally painted on HTML canvas at load time", "source": "examples/gridlock-city/src/render/textures.ts", "author": "this project", "licence": "MIT" },
-    { "id": "gridlock-signs", "kind": "neon sign text atlas", "origin": "canvas text rendering of invented names with system fonts", "source": "examples/gridlock-city/src/render/textures.ts (SignAtlas), names in src/city.ts", "author": "this project", "licence": "MIT" },
-    { "id": "gridlock-city-geometry", "kind": "buildings, roads, markings, props, pier, Ferris wheel, radio mast, lighthouse", "origin": "generated from the hand-designed layout in code", "source": "examples/gridlock-city/src/city.ts, src/render/cityMesh.ts, src/render/geo.ts", "author": "this project", "licence": "MIT" },
-    { "id": "gridlock-vehicles", "kind": "5 vehicle models (sports, sedan, taxi, police, van)", "origin": "extruded side profiles defined as coordinate lists", "source": "examples/gridlock-city/src/render/models.ts", "author": "this project", "licence": "MIT" },
-    { "id": "gridlock-people", "kind": "articulated low-poly humans with procedural animation", "origin": "box primitives, vertex colours", "source": "examples/gridlock-city/src/render/models.ts", "author": "this project", "licence": "MIT" },
-    { "id": "gridlock-sky-ocean", "kind": "sky dome, ocean, rain, particles", "origin": "GLSL shaders and particle code", "source": "examples/gridlock-city/src/render/atmosphere.ts, effects.ts", "author": "this project", "licence": "MIT" },
-    { "id": "fieldbook-art", "kind": "pixel-art sprites, tiles, 3x5 font", "origin": "string sprites and procedural noise in code", "source": "examples/fieldbook/art.ts, engines/raster2d/font.ts", "author": "this project", "licence": "MIT" },
-    { "id": "cellframe-ui", "kind": "spreadsheet shell UI", "origin": "original HTML/CSS/canvas; not derived from any commercial spreadsheet's assets", "source": "renderers/sheet-canvas/", "author": "this project", "licence": "MIT" }
+    {
+      "id": "gridlock-textures",
+      "kind": "textures (asphalt, pavement, promenade, sand, grass, wood, roof, concrete, facade atlases, awning stripes, palm frond, glow, clouds, car decals)",
+      "origin": "procedurally painted on HTML canvas at load time",
+      "source": "examples/gridlock-city/src/render/textures.ts",
+      "author": "this project",
+      "licence": "MIT"
+    },
+    {
+      "id": "gridlock-signs",
+      "kind": "neon sign text atlas",
+      "origin": "canvas text rendering of invented names with system fonts",
+      "source": "examples/gridlock-city/src/render/textures.ts (SignAtlas), names in src/city.ts",
+      "author": "this project",
+      "licence": "MIT"
+    },
+    {
+      "id": "gridlock-city-geometry",
+      "kind": "buildings, roads, markings, props, pier, Ferris wheel, radio mast, lighthouse",
+      "origin": "generated from the hand-designed layout in code",
+      "source": "examples/gridlock-city/src/city.ts, src/render/cityMesh.ts, src/render/geo.ts",
+      "author": "this project",
+      "licence": "MIT"
+    },
+    {
+      "id": "gridlock-vehicles",
+      "kind": "5 vehicle models (sports, sedan, taxi, police, van)",
+      "origin": "extruded side profiles defined as coordinate lists",
+      "source": "examples/gridlock-city/src/render/models.ts",
+      "author": "this project",
+      "licence": "MIT"
+    },
+    {
+      "id": "gridlock-people",
+      "kind": "articulated low-poly humans with procedural animation",
+      "origin": "box primitives, vertex colours",
+      "source": "examples/gridlock-city/src/render/models.ts",
+      "author": "this project",
+      "licence": "MIT"
+    },
+    {
+      "id": "gridlock-sky-ocean",
+      "kind": "sky dome, ocean, rain, particles",
+      "origin": "GLSL shaders and particle code",
+      "source": "examples/gridlock-city/src/render/atmosphere.ts, effects.ts",
+      "author": "this project",
+      "licence": "MIT"
+    },
+    {
+      "id": "fieldbook-art",
+      "kind": "pixel-art sprites, tiles, 3x5 font",
+      "origin": "string sprites and procedural noise in code",
+      "source": "examples/fieldbook/art.ts, engines/raster2d/font.ts",
+      "author": "this project",
+      "licence": "MIT"
+    },
+    {
+      "id": "cellframe-ui",
+      "kind": "spreadsheet shell UI",
+      "origin": "original HTML/CSS/canvas; not derived from any commercial spreadsheet's assets",
+      "source": "renderers/sheet-canvas/",
+      "author": "this project",
+      "licence": "MIT"
+    },
+    {
+      "id": "quayside-map-data",
+      "kind": "street network, building footprints and heights, shoreline, parks, jetties, the Elizabeth Quay Bridge path, the South Perth ferry route",
+      "origin": "OpenStreetMap, Overpass API export of Elizabeth Quay and Perth Water (Western Australia)",
+      "source": "examples/quayside/data/osm-eq.txt, processed by scripts/quayside/build_city.py into data/city.json and data/ground.png",
+      "author": "© OpenStreetMap contributors",
+      "licence": "ODbL 1.0 (see examples/quayside/data/LICENSE-DATA.md)"
+    },
+    {
+      "id": "quayside-render",
+      "kind": "procedural facades (glass towers, offices, heritage brick and sandstone, shopfronts), ground materials, river shader, sky, night lighting",
+      "origin": "GLSL generated in code",
+      "source": "examples/quayside/src/render/facades.ts, environment.ts",
+      "author": "this project",
+      "licence": "MIT"
+    },
+    {
+      "id": "quayside-landmarks",
+      "kind": "Elizabeth Quay Bridge arches, Spanda sculpture, Bell Tower spire, jetties, trees, river ferry (generic livery), river police boat",
+      "origin": "modelled in code from public photographs and the OSM geometry; no operator logos or liveries",
+      "source": "examples/quayside/src/render/landmarks.ts",
+      "author": "this project",
+      "licence": "MIT"
+    },
+    {
+      "id": "vehicles-smooth",
+      "kind": "lofted car bodies with glasshouse, five-spoke wheels (Quayside style)",
+      "origin": "cross-sections generated from the side profiles",
+      "source": "examples/gridlock-city/src/render/models.ts (loftBody)",
+      "author": "this project",
+      "licence": "MIT"
+    }
   ],
   "third_party_code": [
-    { "name": "three", "version": "0.170.0", "use": "3D rendering, postprocessing (EffectComposer, UnrealBloomPass, OutputPass)", "licence": "MIT", "url": "https://github.com/mrdoob/three.js" },
-    { "name": "esbuild", "use": "build tool (dev only)", "licence": "MIT" },
-    { "name": "playwright", "use": "browser evals (dev only)", "licence": "Apache-2.0" },
-    { "name": "websockets, openpyxl, xlwings (optional), pywin32 (optional), pynput (optional)", "use": "Python bridge", "licence": "BSD-3-Clause / MIT / BSD-3-Clause / PSF / LGPL-3.0 (pynput, optional, not bundled)" }
+    {
+      "name": "three",
+      "version": "0.170.0",
+      "use": "3D rendering, postprocessing (EffectComposer, UnrealBloomPass, OutputPass)",
+      "licence": "MIT",
+      "url": "https://github.com/mrdoob/three.js"
+    },
+    {
+      "name": "esbuild",
+      "use": "build tool (dev only)",
+      "licence": "MIT"
+    },
+    {
+      "name": "playwright",
+      "use": "browser evals (dev only)",
+      "licence": "Apache-2.0"
+    },
+    {
+      "name": "websockets, openpyxl, xlwings (optional), pywin32 (optional), pynput (optional)",
+      "use": "Python bridge",
+      "licence": "BSD-3-Clause / MIT / BSD-3-Clause / PSF / LGPL-3.0 (pynput, optional, not bundled)"
+    }
   ],
   "names": "Meridian Bay, Coral Point, Neon Mile, The Meridian, Porter Logistics, BayGas, Velocity Motors, Gull Cab, Coral GT, Bayline, Porter van, Radio Meridian, Fieldbook and Cellframe were invented for this project."
 }
